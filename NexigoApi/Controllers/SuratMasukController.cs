@@ -148,9 +148,9 @@ namespace NexigoApi.Controllers
             return Ok(getdata);
         }
 
-        //read draft data by Id
+        //read data by Id
         [HttpPost]
-        public IHttpActionResult ReadDraftById(int Id)
+        public IHttpActionResult ReadDataById(int Id)
         {
             var data = from Baca in context.surat_masuk_tables
                         where Baca.id_surat_masuk == Id
@@ -175,7 +175,7 @@ namespace NexigoApi.Controllers
             
             return Ok(data);
         }
-                
+
         //delete data Surat Masuk
         [HttpPost]
         public IHttpActionResult Delete(int Id)

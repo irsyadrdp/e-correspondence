@@ -86,9 +86,9 @@ xg.widget({
             else console.log("Anda sudah login");
         },
         
-        edit: function (Id) {
+        lihat: function (Id) {
             document.cookie = "temp_id=" + Id;
-            xg.navigate('surat_masuk/edit_surat_masuk');
+            xg.navigate('lihat_archive_surat_masuk');
         },
 
         funcName: function () {

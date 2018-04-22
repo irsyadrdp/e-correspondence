@@ -293,7 +293,7 @@ xg.widget({
             //fetch draft data by Id
             let Id = $.cookie("temp_id");
             xg.ajax({
-                url: 'http://localhost:31602/api/SuratMasuk/ReadDraftById?Id=' + Id,
+                url: 'http://localhost:31602/api/SuratMasuk/ReadDataById?Id=' + Id,
                 type: 'POST',
                 contentType: false,
                 processData: false,

@@ -189,6 +189,7 @@
     <Content Include="js\views\home\biodata2.js" />
     <Content Include="js\views\home\index.js" />
     <Content Include="js\views\kotak_masuk\kotak_masuk.js" />
+    <Content Include="js\views\lihat_archive.js" />
     <Content Include="js\views\login.js" />
     <Content Include="js\views\logout.js" />
     <Content Include="js\views\main_view_template.js" />
