@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="e_corr_db" Class="CRUDDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=MSI-CX72-6QD\SQLEXPRESS;Initial Catalog=e_corr_db;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="e_corr_dbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.user_table" Member="user_tables">
+    <Type Name="user_table">
+      <Column Name="id_user" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nama_user" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="email_user" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="token" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="id_divisi" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="user_table_inbox_table" Member="inbox_tables" ThisKey="id_user" OtherKey="id_user" Type="inbox_table" />
+      <Association Name="user_table_surat_masuk_table" Member="surat_masuk_tables" ThisKey="id_user" OtherKey="penerima" Type="surat_masuk_table" />
+      <Association Name="divisi_table_user_table" Member="divisi_table" ThisKey="id_divisi" OtherKey="id_divisi" Type="divisi_table" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.direktorat_table" Member="direktorat_tables">
+    <Type Name="direktorat_table">
+      <Column Name="id_direktorat" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nama_direktorat" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="direktorat_table_divisi_table" Member="divisi_tables" ThisKey="id_direktorat" OtherKey="id_direktorat" Type="divisi_table" />
+    </Type>
+  </Table>
+  <Table Name="dbo.divisi_table" Member="divisi_tables">
+    <Type Name="divisi_table">
+      <Column Name="id_divisi" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id_direktorat" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="nama_divisi" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="divisi_table_user_table" Member="user_tables" ThisKey="id_divisi" OtherKey="id_divisi" Type="user_table" />
+      <Association Name="divisi_table_surat_masuk_table" Member="surat_masuk_tables" ThisKey="id_divisi" OtherKey="kode_bagian_organisasi" Type="surat_masuk_table" />
+      <Association Name="direktorat_table_divisi_table" Member="direktorat_table" ThisKey="id_direktorat" OtherKey="id_direktorat" Type="direktorat_table" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.inbox_table" Member="inbox_tables">
+    <Type Name="inbox_table">
+      <Column Name="id_surat_masuk" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id_user" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="pengirim" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="perihal" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="tipe" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="waktu_masuk" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="alamat_file" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Association Name="user_table_inbox_table" Member="user_table" ThisKey="id_user" OtherKey="id_user" Type="user_table" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.surat_masuk_table" Member="surat_masuk_tables">
+    <Type Name="surat_masuk_table">
+      <Column Name="id_surat_masuk" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tempat" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="tanggal" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="nomor" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="pengirim" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="penerima" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="status_penerima" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="kode_simpan" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="kode_bagian_organisasi" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="perihal" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="prioritas" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="klasifikasi_surat" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="masa_retensi" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="alamat_file" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="alamat_file_lampiran" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="divisi_table_surat_masuk_table" Member="divisi_table" ThisKey="kode_bagian_organisasi" OtherKey="id_divisi" Type="divisi_table" IsForeignKey="true" />
+      <Association Name="user_table_surat_masuk_table" Member="user_table" ThisKey="penerima" OtherKey="id_user" Type="user_table" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

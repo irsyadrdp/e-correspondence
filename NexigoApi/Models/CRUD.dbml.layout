@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 14.25, 8.5" name="CRUD">
+  <DataContextMoniker Name="/CRUDDataContext" />
+  <nestedChildShapes>
+    <classShape Id="95b4ec2e-7d90-489b-95a9-9d1c34bef20f" absoluteBounds="6.25, 3.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/CRUDDataContext/user_table" />
+      <nestedChildShapes>
+        <elementListCompartment Id="55765f84-6733-4ca1-aa8c-ccce29dd74bd" absoluteBounds="6.265, 3.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="04145053-315a-47a8-b76a-4d20fd87aa54" absoluteBounds="0.75, 4, 2, 1.193992513020834">
+      <DataClassMoniker Name="/CRUDDataContext/direktorat_table" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1d7f7139-06c8-48c3-b770-2d5157bfa87f" absoluteBounds="0.765, 4.46, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9f3ad142-047c-4701-b25b-d632d6c4f69b" absoluteBounds="3.5, 3.875, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/CRUDDataContext/divisi_table" />
+      <nestedChildShapes>
+        <elementListCompartment Id="303dabc1-faf9-4e9f-b24e-b1d1b1bd19e0" absoluteBounds="3.515, 4.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="53b0d4f1-9cd5-4253-8972-99d942590a31" absoluteBounds="9, 3.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/CRUDDataContext/inbox_table" />
+      <nestedChildShapes>
+        <elementListCompartment Id="854238a1-f344-4584-b818-b94fa80bbcad" absoluteBounds="9.015, 3.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="731bca7a-86a8-4de0-892d-d2127f4f5497" absoluteBounds="12, 2.625, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/CRUDDataContext/surat_masuk_table" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2bd3afee-d495-462a-9948-08e9fb17e7db" absoluteBounds="12.015, 3.085, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 4.56814697265625); (6.25 : 4.56814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CRUDDataContext/divisi_table/divisi_table_user_table" />
+      <nodes>
+        <classShapeMoniker Id="9f3ad142-047c-4701-b25b-d632d6c4f69b" />
+        <classShapeMoniker Id="95b4ec2e-7d90-489b-95a9-9d1c34bef20f" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 4.59699625651042); (3.5 : 4.59699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CRUDDataContext/direktorat_table/direktorat_table_divisi_table" />
+      <nodes>
+        <classShapeMoniker Id="04145053-315a-47a8-b76a-4d20fd87aa54" />
+        <classShapeMoniker Id="9f3ad142-047c-4701-b25b-d632d6c4f69b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 4.57774983723958); (9 : 4.57774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CRUDDataContext/user_table/user_table_inbox_table" />
+      <nodes>
+        <classShapeMoniker Id="95b4ec2e-7d90-489b-95a9-9d1c34bef20f" />
+        <classShapeMoniker Id="53b0d4f1-9cd5-4253-8972-99d942590a31" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 5.2612939453125); (4.5 : 6.11460611979167); (7.16666666666667 : 6.11460611979167 : JumpStart); (7.33333333333333 : 6.11460611979167 : JumpEnd); (12 : 6.11460611979167)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CRUDDataContext/divisi_table/divisi_table_surat_masuk_table" />
+      <nodes>
+        <classShapeMoniker Id="9f3ad142-047c-4701-b25b-d632d6c4f69b" />
+        <classShapeMoniker Id="731bca7a-86a8-4de0-892d-d2127f4f5497" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.25 : 5.65549967447917); (7.25 : 6.34416184244792); (12 : 6.34416184244792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CRUDDataContext/user_table/user_table_surat_masuk_table" />
+      <nodes>
+        <classShapeMoniker Id="95b4ec2e-7d90-489b-95a9-9d1c34bef20f" />
+        <classShapeMoniker Id="731bca7a-86a8-4de0-892d-d2127f4f5497" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
