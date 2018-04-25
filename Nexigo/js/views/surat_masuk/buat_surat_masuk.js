@@ -30,7 +30,24 @@ var dataKodeSimpan= [
     { value: 'S9', text: 'S9', },
 ];
 
-var dataPenerima = [];
+var dataUser;
+    //get penerima, pengirim, tembusan data
+    xg.ajax({
+        url: 'http://localhost:31602/api/User/GetPenerima',
+        async: false,
+        method: 'POST',
+        contentType: "application/text; charset=utf-8",
+        success: function (result) {
+            console.log("Success... ");
+            dataUser = result;
+        },
+        error: function (err) {
+            console.log(err);
+        },
+        complete: function () {
+            console.log("Complete");
+        }
+    });
 
 xg.widget({
     text: '&copy; e-Correspondence 2018',
@@ -90,7 +107,7 @@ xg.widget({
                 required: true,
                 placeholder: 'Pilih Penerima',
                 onChange: 'isiKodeOrganisasi',
-                data: 'http://localhost:31602/api/User/GetPenerima'
+                data: dataUser
             },  
 
             {
@@ -118,9 +135,17 @@ xg.widget({
                 text: 'Kode Bagian Organisasi',
                 disabled: true,
                 cols: 7,
-                required: true
+                hide: true
             },
 
+            {
+                name: 'kode_divisi',
+                text: 'Kode Bagian Organisasi',
+                disabled: true,
+                cols: 7,
+                required: true
+            },
+            
             {
                 name: 'perihal',
                 text: 'Perihal',
@@ -369,7 +394,8 @@ xg.widget({
                 success: function (result) {
                     console.log("Success... ");
                     console.log(result);
-                    $('[name="kode_bagian_organisasi"]').val(result);
+                    $('[name="kode_bagian_organisasi"]').val(result.IdDivisi);
+                    $('[name="kode_divisi"]').val(result.KodeDivisi);
                 },
                 error: function (err) {
                     console.log(err);
@@ -381,8 +407,8 @@ xg.widget({
 
         },
 
-        cek: function (asd) {
-            alert(asd);
+        funcName: function () {
+
         }
     }
 })

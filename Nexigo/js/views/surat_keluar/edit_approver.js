@@ -1,71 +1,153 @@
-var dataStatusPenerima = [
+﻿var dataPrioritas = [
     {
-        value: 'T0',
-        text: 'T0',
+        value: 'segera',
+        text: 'Segera',
     },
-    { value: 'T1', text: 'T1', },
-    { value: 'T2', text: 'T2', },
-    { value: 'T3', text: 'T3', },
-    { value: 'T4', text: 'T4', },
-    { value: 'T5', text: 'T5', },
-    { value: 'T6', text: 'T6', },
-    { value: 'T7', text: 'T7', },
-    { value: 'T8', text: 'T8', },
-    { value: 'T9', text: 'T9', },
+    {
+        value: 'biasa',
+        text: 'Biasa',
+    }
+];
+
+var dataKlasifikasi = [
+    {
+        value: 'rahasia',
+        text: 'Biasa',
+    },
+    {
+        value: 'biasa',
+        text: 'Biasa',
+    }
 ];
 
 var dataKodeSimpan = [
     {
-        value: 'S0',
-        text: 'S0',
+        value: 'S1',
+        text: 'S1'
     },
-    { value: 'S1', text: 'S1', },
-    { value: 'S2', text: 'S2', },
-    { value: 'S3', text: 'S3', },
-    { value: 'S4', text: 'S4', },
-    { value: 'S5', text: 'S5', },
-    { value: 'S6', text: 'S6', },
-    { value: 'S7', text: 'S7', },
-    { value: 'S8', text: 'S8', },
-    { value: 'S9', text: 'S9', },
+    {
+        value: 'S2',
+        text: 'S2'
+    },
+    {
+        value: 'S3',
+        text: 'S3'
+    },
+    {
+        value: 'S4',
+        text: 'S4'
+    },
+    {
+        value: 'S5',
+        text: 'S5'
+    },
+    {
+        value: 'S6',
+        text: 'S6'
+    },
+    {
+        value: 'S7',
+        text: 'S7'
+    },
+    {
+        value: 'S8',
+        text: 'S8'
+    },
+    {
+        value: 'S9',
+        text: 'S9'
+    },
 ];
 
-var dataPenerima = [];
-
 var dataUser;
-    //get penerima, pengirim, tembusan data
-    xg.ajax({
-        url: 'http://localhost:31602/api/User/GetPenerima',
-        async: false,
-        method: 'POST',
-        contentType: "application/text; charset=utf-8",
-        success: function (result) {
-            console.log("Success... ");
-            dataUser = result;
-        },
-        error: function (err) {
-            console.log(err);
-        },
-        complete: function () {
-            console.log("Complete");
-        }
-    });
+//get penerima, pengirim, tembusan data
+xg.ajax({
+    url: 'http://localhost:31602/api/User/GetPenerima',
+    async: false,
+    method: 'POST',
+    contentType: "application/text; charset=utf-8",
+    success: function (result) {
+        console.log("Success... ");
+        dataUser = result;
+    },
+    error: function (err) {
+        console.log(err);
+    },
+    complete: function () {
+        console.log("Complete");
+    }
+});
+
+var dataReviewer;
+//get reviewer data
+xg.ajax({
+    url: 'http://localhost:31602/api/User/ReadAllByRole?role=Reviewer',
+    async: false,
+    method: 'POST',
+    contentType: "application/text; charset=utf-8",
+    success: function (result) {
+        console.log("Success... ");
+        dataReviewer = result;
+    },
+    error: function (err) {
+        console.log(err);
+    },
+    complete: function () {
+        console.log("Complete");
+    }
+});
+
+var dataApprover;
+//get approver data
+xg.ajax({
+    url: 'http://localhost:31602/api/User/ReadAllByRole?role=Approver',
+    async: false,
+    method: 'POST',
+    contentType: "application/text; charset=utf-8",
+    success: function (result) {
+        console.log("Success... ");
+        dataApprover = result;
+    },
+    error: function (err) {
+        console.log(err);
+    },
+    complete: function () {
+        console.log("Complete");
+    }
+});
+
+
+
 
 xg.widget({
     text: '&copy; e-Correspondence 2018',
     views: [{
         type: 'panel',
-        text: 'Edit Surat Masuk',
-        name: 'formulirSuratMasuk',
+        text: 'Approve Surat Keluar',
+        name: 'formulirSuratKeluar',
         inline: true,
         collapsible: false,
         cols: 6,
-        offset: 3,
+        offset: 4,
         fields: [
             {
-                name: 'id_surat_masuk',
+                name: 'id_surat_keluar',
                 cols: 7,
-                hide: true
+                hide: true,
+                disabled: true
+            },
+            {
+                name: 'bahasa',
+                text: 'Bahasa yang digunakan',
+                type: 'radio',
+                required: true,
+                disabled: true,
+                //style: 'margin-bottom:40px;',
+                display: 'inline',
+                data: [
+                    { text: 'English', value: 'English' },
+                    { text: 'Indonesia', value: 'Indonesia' }
+                ] 
             },
 
             {
@@ -75,15 +157,20 @@ xg.widget({
                         name: 'tempat',
                         text: 'Tempat',
                         cols: 7,
-                        required: true
+                        required: true,
+                        disabled: true
                     },
                     {
                         type: 'picker',
                         cols: 5,
-                        name: 'tanggal',
                         placeholder: 'Pilih tanggal..',
+                        name: 'tanggal',
                         text: 'Tanggal',
-                        min: moment().subtract(7, 'days'),
+                        min: moment(),
+                        sideBySide: true,
+                        disabledTimeIntervals: [moment({ h: 7 }), moment({ h: 17 })],
+                        //format: 'YYYYMMDD HH:mm',
+                        disabled: true,
                         required: true
                     }
                 ]
@@ -92,46 +179,51 @@ xg.widget({
             {
                 name: 'nomor',
                 text: 'Nomor',
+                type: 'text',
                 cols: 7,
-                required: true
+                required: true,
+                disabled: true,
             },
 
             {
                 name: 'pengirim',
                 text: 'Dari',
+                type: 'select',
                 cols: 7,
-                required: true
+                required: true,
+                disabled: true,
+                placeholder: 'Pilih pengirim',
+                data: dataUser,
+                onChange: 'isiKodeOrganisasi',
+            },
+
+            {
+                name: 'direktorat',
+                text: 'Direktorat',
+                cols: 7,
+                required: true,
+                disabled: true,
             },
 
             {
                 name: 'penerima',
-                text: 'Penerima',
-                type: 'select',
+                text: 'Kepada',
+                type: 'textarea',
+                maxLength: 30,
+                placeholder: 'jabatan, nama, alamat kantor',
                 cols: 7,
                 required: true,
-                placeholder: 'Pilih Penerima',
-                onChange: 'isiKodeOrganisasi',
-                data: dataUser
-            },
-
-            {
-                name: 'status_penerima',
-                text: 'Status Penerima',
-                type: 'select',
-                cols: 4,
-                required: true,
-                placeholder: 'Status Penerima',
-                data: dataStatusPenerima
             },
 
             {
                 name: 'kode_simpan',
                 text: 'Kode Simpan',
                 type: 'select',
-                placeholder: 'Kode Simpan',
                 cols: 4,
                 required: true,
-                data: dataKodeSimpan
+                disabled: true,
+                placeholder: 'Kode Simpan',
+                data: dataKodeSimpan,
             },
 
             {
@@ -154,91 +246,87 @@ xg.widget({
                 name: 'perihal',
                 text: 'Perihal',
                 type: 'textarea',
-                maxLength: 200,
-                placeholder: 'isi perihal',
+                required: true,
+                disabled: true,
                 cols: 7,
-                required: true
             },
 
             {
-                type: 'radio',
                 name: 'prioritas',
                 text: 'Prioritas',
+                type: 'radio',
                 display: 'inline',
                 required: true,
-                data: [
-                    { value: 'segera', text: 'Segera', },
-                    { value: 'biasa', text: 'Biasa', }
-                ]
+                disabled: true,
+                data: dataPrioritas
             },
 
             {
-                type: 'radio',
                 name: 'klasifikasi_surat',
                 text: 'Klasifikasi Surat',
+                type: 'radio',
                 display: 'inline',
                 required: true,
-                data: [
-                    { value: 'rahasia', text: 'Rahasia', },
-                    { value: 'biasa', text: 'Biasa', }
-                ]
+                disabled: true,
+                data: dataKlasifikasi
             },
 
             {
                 type: 'picker',
                 cols: 5,
-                placeholder: 'Pilih retensi..',
+                placeholder: 'Pilih tanggal..',
                 name: 'retensi',
                 text: 'Masa Retensi',
-                min: moment().subtract(7, 'days'),
+                min: moment(),
+                sideBySide: true,
+                disabled: true,
+                disabledTimeIntervals: [moment({ h: 7 }), moment({ h: 17 })],
+                //format: 'YYYY-MM-DD HH:mm',
                 required: true
             },
 
             {
-                type: 'fieldRow',
-                inline: true,
-                fields: [
-                    {
-                        text: 'Surat',
-                        type: 'text',
-                        cols: 2,
-                        disabled: true
-                    },
-                    {
-                        type: 'upload',
-                        name: 'fileSurat',
-                        icon: 'fa-plus',
-                        text: 'Tambah File',
-                        cssClass: 'xg-btn-basic',
-                        cols: 6,
-                        required: true,
-                        filter: ["jpg", "png", "pdf", "doc", "docx"],
-                        filterMessage: 'Hanya dokumen dengan tipe PDF, DOC, DOCX, JPG dan PNG yang dapat diunggah'
-                    },
-                ]
+                type: 'select',
+                text: 'Tembusan',
+                name: 'tembusan',
+                cols: 7,
+                required: true,
+                disabled: true,
+                data: dataUser,
+                placeholder: 'Pilih tembusan',
             },
 
             {
-                type: 'fieldRow',
-                inline: true,
-                fields: [
-                    {
-                        text: 'Lampiran',
-                        type: 'text',
-                        cols: 2,
-                        disabled: true
-                    },
-                    {
-                        type: 'upload',
-                        name: 'fileLampiran',
-                        icon: 'fa-plus',
-                        text: 'Tambah File',
-                        cssClass: 'xg-btn-basic',
-                        cols: 6,
-                        filter: ["jpg", "png", "pdf", "doc", "docx"],
-                        filterMessage: 'Hanya dokumen dengan tipe PDF, DOC, DOCX, JPG dan PNG yang dapat diunggah'
-                    },
-                ]
+                name: 'isi_surat',
+                text: 'Isi Surat',
+                type: 'textarea',
+                required: true,
+                disabled: true,
+                icon: '	fa fa-envelope-o',
+                maxLength: 30,
+                cols: 12,
+            },
+
+            {
+                name: 'fileLampiran',
+                text: 'Lampiran',
+                type: 'textarea',
+                required: true,
+                disabled: true,
+                icon: '	fa fa-envelope-o',
+                maxLength: 30,
+                cols: 12,
+            },
+
+            {
+                type: 'select',
+                text: 'Reviewer',
+                name: 'reviewer',
+                cols: 9,
+                required: true,
+                data: dataReviewer,
+                placeholder: 'Pilih reviewer',
+                disabled: true,
             },
 
             {
@@ -247,7 +335,7 @@ xg.widget({
                 fields: [
                     {
                         name: 'draft',
-                        text: 'Simpan ke Draft',
+                        text: 'Reject',
                         type: 'button',
                         action: function () {
                             var data = xg.serialize();
@@ -262,10 +350,9 @@ xg.widget({
                                     return;
                                 }
                             }
-                            xg.call('update', 'Draft');
+                            xg.call('update', 'Rejected');
                         },
                         cssClass: 'xg-btn-danger',
-                        //style: 'font-size:16px',
                         cols: 2,
                         //offset: 11,
                         inline: false,
@@ -273,7 +360,7 @@ xg.widget({
                     },
                     {
                         name: 'kirim',
-                        text: 'KIRIM',
+                        text: 'Approve',
                         type: 'button',
                         action: function () {
                             var data = xg.serialize();
@@ -288,22 +375,35 @@ xg.widget({
                                     return;
                                 }
                             }
-                            xg.call('update', 'Finish');
+                            xg.call('update', 'Approved');
                         },
                         icon: 'fa-send',
                         cssClass: 'xg-btn-info',
-                        //style: 'font-size:16px',
                         cols: 2,
                         inline: false,
                     },
                 ]
-            }
+            },
+
+            {
+                type: 'fieldRow',
+                fields: [
+                    {
+                        type: 'content',
+                        content: [
+                            "<br/><br/><br/>",
+                        ]
+                    },
+                ]
+            },
+
+
         ]
     }],
 
     functions: {
         init: function (xg, cb) {
-            cb();
+            cb()
 
             //cek log in
             let role = $.cookie("role");
@@ -316,38 +416,40 @@ xg.widget({
             }
             else console.log("Anda sudah login");
 
-            
-            //fetch draft data by Id
+            //fetch surat keluar data by Id
             let Id = $.cookie("temp_id");
             xg.ajax({
-                url: 'http://localhost:31602/api/SuratMasuk/ReadDataById?Id=' + Id,
+                url: 'http://localhost:31602/api/SuratKeluar/ReadDataById?Id=' + Id,
                 type: 'POST',
                 contentType: false,
                 processData: false,
                 cache: false,
                 success: function (data) {
                     console.log("Success... ", data);
-                    //alert(data.data.IdSuratMasuk);
 
                     let poptanggal = data.data.Tanggal.substr(0, 10);
                     let popretensi = data.data.MasaRetensi.substr(0, 10);
                     xg.populate({
-                        id_surat_masuk: data.data.IdSuratMasuk,
+                        id_surat_keluar: data.data.IdSuratKeluar,
+                        bahasa: data.data.Bahasa,
                         tempat: data.data.Tempat,
                         nomor: data.data.Nomor,
                         pengirim: data.data.Pengirim,
+                        direktorat: data.data.Direktorat,
                         penerima: data.data.Penerima,
-                        status_penerima: data.data.StatusPenerima,
                         kode_simpan: data.data.KodeSimpan,
                         kode_bagian_organisasi: data.data.KodeBagianOrganisasi,
                         kode_divisi: data.kode_divisi,
                         perihal: data.data.Perihal,
-                        fileSurat: data.data.AlamatFile,
+                        isi_surat: data.data.IsiSurat,
                         fileLampiran: data.data.AlamatFileLampiran,
                         tanggal: poptanggal,
                         retensi: popretensi,
                         prioritas: data.data.Prioritas,
                         klasifikasi_surat: data.data.KlasifikasiSurat,
+                        tembusan: data.data.Tembusan,
+                        reviewer: data.data.Reviewer,
+                        approver: data.data.Approver,
                     });
                 },
                 error: function (err) {
@@ -357,42 +459,46 @@ xg.widget({
                     console.log("Complete... ");
                 }
             });
-            
+
             //delete temp_id
             $.removeCookie('temp_id', { path: '/' });
         },
-                
+
         update: function (status) {
             var ser = xg.serialize();
             var data = {
-                IdSuratMasuk: ser.id_surat_masuk,
+                IdSuratKeluar: ser.id_surat_keluar,
+                Bahasa: ser.bahasa,
                 Tempat: ser.tempat,
                 Tanggal: ser.tanggal,
                 Nomor: ser.nomor,
                 Pengirim: ser.pengirim,
+                Direktorat: ser.direktorat,
                 Penerima: ser.penerima,
-                StatusPenerima: ser.status_penerima,
                 KodeSimpan: ser.kode_simpan,
                 KodeBagianOrganisasi: parseInt(ser.kode_bagian_organisasi),
                 Perihal: ser.perihal,
                 Prioritas: ser.prioritas,
                 KlasifikasiSurat: ser.klasifikasi_surat,
                 MasaRetensi: ser.retensi,
-                AlamatFile: ser.fileSurat[0].name,
-                AlamatFileLampiran: ser.fileLampiran[0].name,
+                Tembusan: ser.tembusan,
+                IsiSurat: ser.isi_surat,
+                AlamatFileLampiran: ser.fileLampiran,
+                Reviewer: ser.reviewer,
+                Approver: ser.approver,
                 Status: status,
             }
             //console.log(data);
             xg.ajax({
-                url: 'http://localhost:31602/api/SuratMasuk/Update',
+                url: 'http://localhost:31602/api/SuratKeluar/Update',
                 method: 'POST',
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     console.log("Success... ", result);
 
-                    if (status === "Draft") alert("Data surat masuk berhasil disimpan di Draft.")
-                    else if (status === "Finish") alert("Data surat masuk telah dikirim.")
+                    if (status === "Rejected") alert("Data surat keluar ditolak")
+                    else if (status === "Approved") alert("Data surat keluar disetujui")
 
                     xg.navigate('home');
                 },
@@ -407,7 +513,7 @@ xg.widget({
         },
 
         isiKodeOrganisasi: function () {
-            var userId = xg.serialize().penerima;
+            var userId = xg.serialize().pengirim;
             userId = parseInt(userId);
 
             xg.ajax({
@@ -419,6 +525,7 @@ xg.widget({
                     console.log(result);
                     $('[name="kode_bagian_organisasi"]').val(result.IdDivisi);
                     $('[name="kode_divisi"]').val(result.KodeDivisi);
+                    $('[name="direktorat"]').val(result.NamaDirektorat);
                 },
                 error: function (err) {
                     console.log(err);
@@ -434,9 +541,4 @@ xg.widget({
 
         }
     }
-})
-
-
-
-
-
+});

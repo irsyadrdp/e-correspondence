@@ -10,34 +10,43 @@ using NexigoApi.Models;
 
 namespace NexigoApi.Controllers
 {
-    public class GetSuratMasukData
+    public class GetMemorandumData
     {
-        public int Id_Surat_Masuk { get; set; }
-        public string Nomor_Surat { get; set; }
+        public int Id_Memorandum { get; set; }
         public string Tanggal { get; set; }
+        public string Nomor_Surat { get; set; }
         public string Perihal { get; set; }
+        public int IdPengirim { get; set; }
         public string Pengirim { get; set; }
         public int IdPenerima { get; set; }
         public string Penerima { get; set; }
+        public int IdReviewer { get; set; }
+        public string Reviewer { get; set; }
+        public int IdTembusan { get; set; }
+        public string Tembusan { get; set; }
+        public string Status { get; set; }
     }
-    public class GetReadSuratMasuk
+    public class GetReadMemorandum
     {
-        public List<GetSuratMasukData> data { get; set; }
+        public List<GetMemorandumData> data { get; set; }
         public int total { get; set; }
     }
-    public class GetArchiveData_SM
+    public class GetArchiveData_M
     {
-        public SuratMasukModel data { get; set; }
+        public MemorandumModel data { get; set; }
+        public string nama_pengirim { get; set; }
         public string nama_penerima { get; set; }
+        public string nama_reviewer { get; set; }
+        public string nama_tembusan { get; set; }
         public string kode_divisi { get; set; }
     }
 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class SuratMasukController : ApiController
+    public class MemorandumController : ApiController
     {
         //connect to db data context
         private CRUDDataContext context = null;
-        public SuratMasukController()
+        public MemorandumController()
         {
             context = new CRUDDataContext();
         }
@@ -46,38 +55,39 @@ namespace NexigoApi.Controllers
         [HttpPost]
         public bool DataCheck(int Id)
         {
-            var count = context.surat_masuk_tables.Count(x => x.id_surat_masuk == Id);
-            if(count==1) return true;
+            var count = context.memorandum_tables.Count(x => x.id_memorandum == Id);
+            if (count == 1) return true;
             else return false;
         }
 
-        //insert new data Surat Masuk
+        //insert new data Memorandum
         [HttpPost]
-        public IHttpActionResult Insert([FromBody] SuratMasukModel req)
+        public IHttpActionResult Insert([FromBody] MemorandumModel req)
         {
-            var data = new surat_masuk_table();
+            var data = new memorandum_table();
             using (var db = new CRUDDataContext())
             {
-                data = new surat_masuk_table()
+                data = new memorandum_table()
                 {
                     tempat = req.Tempat,
                     tanggal = req.Tanggal,
                     nomor = req.Nomor,
                     pengirim = req.Pengirim,
                     penerima = req.Penerima,
-                    status_penerima = req.StatusPenerima,
                     kode_simpan = req.KodeSimpan,
                     kode_bagian_organisasi = req.KodeBagianOrganisasi,
                     perihal = req.Perihal,
                     prioritas = req.Prioritas,
                     klasifikasi_surat = req.KlasifikasiSurat,
                     masa_retensi = req.MasaRetensi,
-                    alamat_file = req.AlamatFile,
+                    tembusan = req.Tembusan,
+                    isi_surat = req.IsiSurat,
                     alamat_file_lampiran = req.AlamatFileLampiran,
+                    reviewer = req.Reviewer,
                     status = req.Status,
                 };
 
-                db.surat_masuk_tables.InsertOnSubmit(data);
+                db.memorandum_tables.InsertOnSubmit(data);
                 db.SubmitChanges();
             }
 
@@ -85,32 +95,54 @@ namespace NexigoApi.Controllers
             return Ok(res);
         }
 
-        //get draft data
+        //get memorandum data by only 1 status
         [HttpPost]
-        public IHttpActionResult ReadAllDraft()
+        public IHttpActionResult ReadAllByStatus(string Status)
         {
-            var query = from Baca in context.surat_masuk_tables
-                       where Baca.status == "Draft"
-                       select new GetSuratMasukData
+            var query = from Baca in context.memorandum_tables
+                        where Baca.status == Status
+                        select new GetMemorandumData
                         {
-                            Id_Surat_Masuk = Baca.id_surat_masuk,
-                            Nomor_Surat = Baca.nomor,
+                            Id_Memorandum = Baca.id_memorandum,
                             Tanggal = Baca.tanggal.ToString(),
+                            Nomor_Surat = Baca.nomor,
                             Perihal = Baca.perihal,
-                            Pengirim = Baca.pengirim,
+                            IdPengirim = Baca.pengirim,
                             IdPenerima = Baca.penerima,
+                            IdReviewer = Baca.reviewer,
+                            IdTembusan = Baca.tembusan,
+                            Pengirim = "",
                             Penerima = "",
+                            Reviewer = "",
+                            Tembusan = "",
                         };
-            
+
             var data = query.ToArray();
             UserController user = new UserController();
-            for (var i = 0; i < query.ToList().Count; i++) {
-                int id = data[i].IdPenerima;
-                var nama = user.getName(id);
-                data[i].Penerima = nama;
+            for (var i = 0; i < query.ToList().Count; i++)
+            {
+                //pengirim
+                int id_pengirim= data[i].IdPengirim;
+                var nama_pengirim= user.getName(id_pengirim);
+                data[i].Pengirim = nama_pengirim;
+
+                //penerima
+                int id_penerima = data[i].IdPenerima;
+                var nama_penerima = user.getName(id_penerima);
+                data[i].Penerima = nama_penerima;
+
+                //reviewer
+                int id_reviewer= data[i].IdReviewer;
+                var nama_reviewer= user.getName(id_reviewer);
+                data[i].Reviewer= nama_reviewer;
+
+                //tembusan
+                int id_tembusan = data[i].IdTembusan;
+                var nama_tembusan= user.getName(id_tembusan);
+                data[i].Tembusan= nama_tembusan;
             }
 
-            GetReadSuratMasuk getdata = new GetReadSuratMasuk
+            GetReadMemorandum getdata = new GetReadMemorandum
             {
                 data = data.ToList(),
                 total = query.ToList().Count
@@ -119,33 +151,55 @@ namespace NexigoApi.Controllers
             return Ok(getdata);
         }
 
-        //get finish data
+        //get memorandum data by 2 status
         [HttpPost]
-        public IHttpActionResult ReadAllFinish()
+        public IHttpActionResult ReadAllBy2Status(string Status1, string Status2)
         {
-            var query = from Baca in context.surat_masuk_tables
-                        where Baca.status == "Finish"
-                        select new GetSuratMasukData
+            var query = from Baca in context.memorandum_tables
+                        where Baca.status == Status1 || Baca.status == Status2
+                        select new GetMemorandumData
                         {
-                            Id_Surat_Masuk = Baca.id_surat_masuk,
-                            Nomor_Surat = Baca.nomor,
+                            Id_Memorandum = Baca.id_memorandum,
                             Tanggal = Baca.tanggal.ToString(),
+                            Nomor_Surat = Baca.nomor,
                             Perihal = Baca.perihal,
-                            Pengirim = Baca.pengirim,
+                            IdPengirim = Baca.pengirim,
                             IdPenerima = Baca.penerima,
+                            IdReviewer = Baca.reviewer,
+                            IdTembusan = Baca.tembusan,
+                            Pengirim = "",
                             Penerima = "",
+                            Reviewer = "",
+                            Tembusan = "",
+                            Status = Baca.status
                         };
 
             var data = query.ToArray();
             UserController user = new UserController();
             for (var i = 0; i < query.ToList().Count; i++)
             {
-                int id = data[i].IdPenerima;
-                var nama = user.getName(id);
-                data[i].Penerima = nama;
+                //pengirim
+                int id_pengirim = data[i].IdPengirim;
+                var nama_pengirim = user.getName(id_pengirim);
+                data[i].Pengirim = nama_pengirim;
+
+                //penerima
+                int id_penerima = data[i].IdPenerima;
+                var nama_penerima = user.getName(id_penerima);
+                data[i].Penerima = nama_penerima;
+
+                //reviewer
+                int id_reviewer = data[i].IdReviewer;
+                var nama_reviewer = user.getName(id_reviewer);
+                data[i].Reviewer = nama_reviewer;
+
+                //tembusan
+                int id_tembusan = data[i].IdTembusan;
+                var nama_tembusan = user.getName(id_tembusan);
+                data[i].Tembusan = nama_tembusan;
             }
 
-            GetReadSuratMasuk getdata = new GetReadSuratMasuk
+            GetReadMemorandum getdata = new GetReadMemorandum
             {
                 data = data.ToList(),
                 total = query.ToList().Count
@@ -158,44 +212,52 @@ namespace NexigoApi.Controllers
         [HttpPost]
         public IHttpActionResult ReadDataById(int Id)
         {
-            var data = (from Baca in context.surat_masuk_tables
-                        where Baca.id_surat_masuk == Id
-                        select new SuratMasukModel
+            var data = (from Baca in context.memorandum_tables
+                        where Baca.id_memorandum == Id
+                        select new MemorandumModel
                         {
-                            IdSuratMasuk = Baca.id_surat_masuk,
+                            IdMemorandum = Baca.id_memorandum,
                             Tempat = Baca.tempat,
                             Tanggal = Baca.tanggal,
                             Nomor = Baca.nomor,
                             Pengirim = Baca.pengirim,
                             Penerima = Baca.penerima,
-                            StatusPenerima = Baca.status_penerima,
                             KodeSimpan = Baca.kode_simpan,
                             KodeBagianOrganisasi = Baca.kode_bagian_organisasi,
                             Perihal = Baca.perihal,
                             Prioritas = Baca.prioritas,
                             KlasifikasiSurat = Baca.klasifikasi_surat,
                             MasaRetensi = Baca.masa_retensi,
-                            AlamatFile = Baca.alamat_file,
-                            AlamatFileLampiran = Baca.alamat_file_lampiran
+                            Tembusan = Baca.tembusan,
+                            IsiSurat = Baca.isi_surat,
+                            AlamatFileLampiran = Baca.alamat_file_lampiran,
+                            Reviewer = Baca.reviewer,
+                            Approver = Baca.approver,
                         }).FirstOrDefault();
 
             OrganisasiController organisasi = new OrganisasiController();
             string kodeDivisi = organisasi.getKodeDivisi(data.KodeBagianOrganisasi);
 
             UserController user = new UserController();
-            string namaUser = user.getName(data.Penerima);
+            string namaPengirim = user.getName(data.Pengirim);
+            string namaPenerima = user.getName(data.Penerima);
+            string namaReviewer = user.getName(data.Reviewer);
+            string namaTembusan = user.getName(data.Tembusan);
 
-            GetArchiveData_SM getdata = new GetArchiveData_SM
+            GetArchiveData_M getdata = new GetArchiveData_M
             {
                 data = data,
                 kode_divisi = kodeDivisi,
-                nama_penerima = namaUser
+                nama_pengirim = namaPengirim,
+                nama_penerima = namaPenerima,
+                nama_reviewer = namaReviewer,
+                nama_tembusan = namaTembusan
             };
 
             return Ok(getdata);
         }
 
-        //delete data Surat Masuk
+        //delete data memorandum
         [HttpPost]
         public IHttpActionResult Delete(int Id)
         {
@@ -206,8 +268,8 @@ namespace NexigoApi.Controllers
                     using (var db = new CRUDDataContext())
                     {
 
-                        var data = db.surat_masuk_tables.FirstOrDefault(o => o.id_surat_masuk == Id);
-                        db.surat_masuk_tables.DeleteOnSubmit(data);
+                        var data = db.memorandum_tables.FirstOrDefault(o => o.id_memorandum== Id);
+                        db.memorandum_tables.DeleteOnSubmit(data);
                         db.SubmitChanges();
 
                         var res = "Data berhasil dihapus";
@@ -227,8 +289,8 @@ namespace NexigoApi.Controllers
             }
         }
 
-        //update data surat masuk
-        public IHttpActionResult Update([FromBody] SuratMasukModel req)
+        //update data memorandum
+        public IHttpActionResult Update([FromBody] MemorandumModel req)
         {
             try
             {
@@ -237,21 +299,23 @@ namespace NexigoApi.Controllers
                     using (var db = new CRUDDataContext())
                     {
 
-                        var data = db.surat_masuk_tables.FirstOrDefault(o => o.id_surat_masuk == req.IdSuratMasuk);
+                        var data = db.memorandum_tables.FirstOrDefault(o => o.id_memorandum== req.IdMemorandum);
                         data.tempat = req.Tempat;
                         data.tanggal = req.Tanggal;
                         data.nomor = req.Nomor;
                         data.pengirim = req.Pengirim;
                         data.penerima = req.Penerima;
-                        data.status_penerima = req.StatusPenerima;
                         data.kode_simpan = req.KodeSimpan;
                         data.kode_bagian_organisasi = req.KodeBagianOrganisasi;
                         data.perihal = req.Perihal;
                         data.prioritas = req.Prioritas;
                         data.klasifikasi_surat = req.KlasifikasiSurat;
                         data.masa_retensi = req.MasaRetensi;
-                        data.alamat_file = req.AlamatFile;
+                        data.tembusan = req.Tembusan;
+                        data.isi_surat = req.IsiSurat;
                         data.alamat_file_lampiran = req.AlamatFileLampiran;
+                        data.reviewer = req.Reviewer;
+                        data.approver = req.Approver;
                         data.status = req.Status;
 
                         db.SubmitChanges();
@@ -270,7 +334,6 @@ namespace NexigoApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
     }
 }

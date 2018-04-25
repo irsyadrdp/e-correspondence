@@ -326,17 +326,23 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Controllers\CRUDController.cs" />
+    <Compile Include="Controllers\MemorandumController.cs" />
+    <Compile Include="Controllers\OrganisasiController.cs" />
+    <Compile Include="Controllers\SuratKeluarController.cs" />
     <Compile Include="Controllers\SuratMasukController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MemorandumModel.cs" />
     <Compile Include="Models\CRUD.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CRUD.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DivisiModel.cs" />
     <Compile Include="Models\InboxModel.cs" />
+    <Compile Include="Models\SuratKeluarModel.cs" />
     <Compile Include="Models\SuratMasukModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -373,7 +379,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Memorandum\" />
+    <Folder Include="Views\Organisasi\" />
     <Folder Include="Views\PDF\" />
+    <Folder Include="Views\SuratKeluar\" />
     <Folder Include="Views\SuratMasuk\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

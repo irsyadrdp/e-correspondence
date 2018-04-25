@@ -1,14 +1,3 @@
-var dataBahasa = [
-    {
-        value: 'indonesia',
-        text: 'Indonesia',
-    },
-    {
-        value: 'english',
-        text: 'English',
-    }
-];
-
 var dataPrioritas= [
     {
         value: 'segera',
@@ -23,90 +12,11 @@ var dataPrioritas= [
 var dataKlasifikasi = [
     {
         value: 'rahasia',
-        text: 'Biasa',
+        text: 'Rahasia',
     },
     {
         value: 'biasa',
         text: 'Biasa',
-    }
-];
-
-var dataTempat = [
-    {
-        value: 'Bandung',
-        text: 'Bandung',
-    },
-    {
-        value: 'Jakarta',
-        text: 'Jakarta',
-    },
-    {
-        value: 'Surabaya',
-        text: 'Surabaya',
-    },
-    {
-        value: 'Padang',
-        text: 'Padang',
-    },
-];
-
-var dataDari = [
-    {
-        value: 'Fikri',
-        text: 'Fikri',
-    },
-    {
-        value: 'Firda',
-        text: 'Firda',
-    },
-    {
-        value: 'Irsyad',
-        text: 'Irsyad',
-    }
-];
-
-var dataTembusan = [
-    {
-        value: 'Fikri',
-        text: 'Fikri',
-    },
-    {
-        value: 'Firda',
-        text: 'Firda',
-    },
-    {
-        value: 'Irsyad',
-        text: 'Irsyad',
-    }
-];
-
-var dataReviewer= [
-    {
-        value: 'Fikri',
-        text: 'Fikri',
-    },
-    {
-        value: 'Firda',
-        text: 'Firda',
-    },
-    {
-        value: 'Irsyad',
-        text: 'Irsyad',
-    }
-];
-
-var dataDirektorat = [
-    {
-        value: 'IT',
-        text: 'IT',
-    },
-    {
-        value: 'Keuangan',
-        text: 'Keuangan',
-    },
-    {
-        value: 'CEO',
-        text: 'CEO',
     }
 ];
 
@@ -149,23 +59,46 @@ var dataKodeSimpan = [
     },
 ];
 
-var dataBulan = [
-    { value: '1', text: '1', },
-    { value: '2', text: '2', },
-    { value: '3', text: '3', },
-    { value: '4', text: '4', },
-    { value: '5', text: '5', },
-    { value: '6', text: '6', },
-    { value: '7', text: '7', },
-    { value: '8', text: '8', },
-    { value: '9', text: '9', },
-    { value: '10', text: '10', },
-    { value: '11', text: '11', },
-    { value: '12', text: '12', },
-];
+var dataUser;
+//get penerima, pengirim, tembusan data
+xg.ajax({
+    url: 'http://localhost:31602/api/User/GetPenerima',
+    async: false,
+    method: 'POST',
+    contentType: "application/text; charset=utf-8",
+    success: function (result) {
+        console.log("Success... ");
+        dataUser = result;
+    },
+    error: function (err) {
+        console.log(err);
+    },
+    complete: function () {
+        console.log("Complete");
+    }
+});
+
+var dataReviewer;
+//get reviewer data
+xg.ajax({
+    url: 'http://localhost:31602/api/User/ReadAllByRole?role=Reviewer',
+    async: false,
+    method: 'POST',
+    contentType: "application/text; charset=utf-8",
+    success: function (result) {
+        console.log("Success... ");
+        dataReviewer = result;
+    },
+    error: function (err) {
+        console.log(err);
+    },
+    complete: function () {
+        console.log("Complete");
+    }
+});
 
 xg.widget({
-    text: 'Surat Keluar',
+    text: '&copy; e-Correspondence 2018',
     views: [{
         type: 'panel',
         text: 'Formulir Surat Keluar',
@@ -173,188 +106,363 @@ xg.widget({
         inline: true,
         collapsible: false,
         cols: 6,
-        offset: 3,
+        offset: 4,
         fields: [
             {
                 name: 'bahasa',
                 text: 'Bahasa yang digunakan',
                 type: 'radio',
+                required: true,
                 //style: 'margin-bottom:40px;',
                 display: 'inline',
-                data: dataBahasa
+                data: [
+                    {text: 'English', value: 'English' },
+                    {text: 'Indonesia', value: 'Indonesia' }
+                ] 
             },
+
             {
                 type: 'fieldRow',
                 fields: [
                     {
                         name: 'tempat',
-                        text: 'Tempat, Tanggal*',
-                        type: 'select',
-                        cols: 9,
+                        text: 'Tempat',
+                        cols: 7,
                         required: true,
-                        placeholder: 'Pilih tempat',
-                        data: dataTempat,
                     },
                     {
-                        name: 'tanggal',
                         type: 'picker',
-                        cols: 3,
-                        format: 'DD MMMM YYYY',
-                        required: true,
+                        cols: 5,
+                        placeholder: 'Pilih tanggal..',
+                        name: 'tanggal',
+                        text: 'Tanggal',
+                        min: moment(),
+                        sideBySide: true,
+                        disabledTimeIntervals: [moment({ h: 7 }), moment({ h: 17 })],
+                        //format: 'YYYYMMDD HH:mm',
+                        required: true
                     }
                 ]
             },
+
             {
                 name: 'nomor',
                 text: 'Nomor',
                 type: 'text',
-                cols: 9,
-                disabled: true
+                cols: 7,
+                required: true,
             },
+
             {
-                name: 'dari',
-                text: 'Dari*',
+                name: 'pengirim',
+                text: 'Dari',
                 type: 'select',
-                cols: 9,
+                cols: 7,
                 required: true,
                 placeholder: 'Pilih pengirim',
-                data: dataDari,
+                onChange: 'isiKodeOrganisasi',
+                data: dataUser,
             },
+
             {
                 name: 'direktorat',
-                text: 'Direktorat*',
-                type: 'select',
-                cols: 9,
+                text: 'Direktorat',
+                cols: 7,
                 required: true,
-                placeholder: 'Pilih direktorat',
-                data: dataDirektorat,
+                disabled: true,
             },
+
             {
-                name: 'tujuan',
+                name: 'penerima',
                 text: 'Kepada',
                 type: 'textarea',
                 maxLength: 30,
                 placeholder: 'jabatan, nama, alamat kantor',
-                cols: 12,
-            },
-            {
-                name: 'kodeSimpan',
-                text: 'Kode Simpan*',
-                type: 'select',
-                cols: 6,
+                cols: 7,
                 required: true,
-                placeholder: 'Pilih kode simpan',
+            },
+
+            {
+                name: 'kode_simpan',
+                text: 'Kode Simpan',
+                type: 'select',
+                cols: 4,
+                required: true,
+                placeholder: 'Kode Simpan',
                 data: dataKodeSimpan,
             },
+
             {
-                name: 'kbo',
+                name: 'kode_bagian_organisasi',
                 text: 'Kode Bagian Organisasi',
                 type: 'text',
-                cols: 9,
+                cols: 7,
+                required: true,
+                hide: true
+            }, {
+                name: 'kode_divisi',
+                text: 'Kode Bagian Organisasi',
+                type: 'text',
+                cols: 7,
+                required: true,
                 disabled: true
             },
+
             {
                 name: 'perihal',
-                text: 'Perihal*',
-                type: 'text',
-                cols: 12,
+                text: 'Perihal',
+                type: 'textarea',
+                required: true,
+                cols: 7,
             },
+
             {
                 name: 'prioritas',
                 text: 'Prioritas',
                 type: 'radio',
                 display: 'inline',
+                required: true,
                 data: dataPrioritas
             },
+
             {
-                name: 'klasifikasiSurat',
+                name: 'klasifikasi_surat',
                 text: 'Klasifikasi Surat',
                 type: 'radio',
                 display: 'inline',
+                required: true,
                 data: dataKlasifikasi
             },
+
             {
-                type: 'fieldRow',
-                fields: [
-                    {
-                        name: 'tahunRetensi',
-                        text: 'Masa Retensi*',
-                        type: 'numeric',
-                        cols: 5,
-                        placeholder: 'lama tahun',
-                        required: true,
-                    },
-                    {
-                        name: 'bulanRetensi',
-                        type: 'select',
-                        cols: 4,
-                        required: true,
-                        placeholder: 'Lama bulan',
-                        data: dataBulan,
-                    },
-                ]
+                type: 'picker',
+                cols: 5,
+                placeholder: 'Pilih tanggal..',
+                name: 'retensi',
+                text: 'Masa Retensi',
+                min: moment(),
+                sideBySide: true,
+                disabledTimeIntervals: [moment({ h: 7 }), moment({ h: 17 })],
+                //format: 'YYYY-MM-DD HH:mm',
+                required: true
             },
+
             {
-                type: 'autoComplete',
+                type: 'select',
                 text: 'Tembusan',
                 name: 'tembusan',
-                multiple: true,
-                persist: true,
-                cols: 9,
-                data: dataTembusan,
+                cols: 7,
+                required: true,
+                data: dataUser,
                 placeholder: 'Pilih tembusan',
             },
+
             {
-                name: 'isiSurat',
+                name: 'isi_surat',
                 text: 'Isi Surat',
                 type: 'textarea',
+                required: true,
                 icon: '	fa fa-envelope-o',
                 maxLength: 30,
                 cols: 12,
             },
+
             {
                 type: 'fieldRow',
+                inline: true,
                 fields: [
                     {
-                        name: 'jumlahLampiran',
                         text: 'Lampiran',
                         type: 'text',
-                        cols: 8,
+                        cols: 2,
                         disabled: true
                     },
                     {
                         type: 'upload',
-                        name: 'uploader1',
-                        icon: 'fa-upload',
-                        cols: 4,
+                        name: 'fileLampiran',
+                        icon: 'fa-plus',
+                        text: 'Tambah File',
+                        cssClass: 'xg-btn-basic',
+                        cols: 6,
+                        required: true,
                         filter: ["jpg", "png", "pdf", "doc", "docx"],
-                        filterMessage: 'Hanya dokumen dengan tipe PDF, DOC, DOCX, JPG dan PNG yang dapat diunggah',
-                        data: { url: 'api/file/uploadeds' }
-                        //uploadUrl: 'http://localhost:53390/api/material/attachment/upload'
-                    },      
+                        filterMessage: 'Hanya dokumen dengan tipe PDF, DOC, DOCX, JPG dan PNG yang dapat diunggah'
+                    },
                 ]
             },
                     
             {
-                type: 'autoComplete',
+                type: 'select',
                 text: 'Reviewer',
                 name: 'reviewer',
-                multiple: true,
-                persist: true,
-                cols: 9,
+                cols: 7,
+                required: true,
                 data: dataReviewer,
                 placeholder: 'Pilih reviewer',
             },
+
+            {
+                type: 'fieldRow',
+                name: 'button_aksi',
+                fields: [
+                    {
+                        name: 'draft',
+                        text: 'Simpan ke Draft',
+                        type: 'button',
+                        action: function () {
+                            var data = xg.serialize();
+                            var emptyData = 0;
+                            data = $.map(data, function (value, index) {
+                                return [value];
+                            });
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i] === "" || data[i] === null || data[i].length === 0) {
+                                    alert("Form data harus diisi dengan lengkap");
+                                    emptyData++;
+                                    return;
+                                }
+                            }
+                            xg.call('insert', 'Draft');
+                        },
+                        cssClass: 'xg-btn-danger',
+                        cols: 2,
+                        //offset: 11,
+                        inline: false,
+                        offset: 8,
+                    },
+                    {
+                        name: 'kirim',
+                        text: 'KIRIM',
+                        type: 'button',
+                        action: function () {
+                            var data = xg.serialize();
+                            var emptyData = 0;
+                            data = $.map(data, function (value, index) {
+                                return [value];
+                            });
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i] === "" || data[i] === null || data[i].length === 0) {
+                                    alert("Form data harus diisi dengan lengkap");
+                                    emptyData++;
+                                    return;
+                                }
+                            }
+                            xg.call('insert', 'Pending');
+                        },
+                        icon: 'fa-send',
+                        cssClass: 'xg-btn-info',
+                        cols: 2,
+                        inline: false,
+                    },
+                ]
+            },
+
+            {
+                type: 'fieldRow',
+                fields: [
+                    {
+                        type: 'content',
+                        content: [
+                            "<br/><br/><br/>",
+                        ]
+                    },
+                ]
+            },
+
+
         ]
-            
-        
     }],
 
     functions: {
         init: function (xg, cb) {
             cb()
+
+            //cek log in
+            let role = $.cookie("role");
+            let nama_user = $.cookie("nama_user");
+            console.log("asdasdasd ...", role);
+
+            if (role === undefined) {
+                console.log("Silahkan log in terlebih dahulu");
+                xg.navigate("login");
+            }
+            else console.log("Anda sudah login");
         },
-        
+
+        insert: function (status) {
+            var ser = xg.serialize();
+            var data = {
+                Bahasa: ser.bahasa,
+                Tempat: ser.tempat,
+                Tanggal: ser.tanggal,
+                Nomor: ser.nomor,
+                Pengirim: ser.pengirim,
+                Direktorat: ser.direktorat,
+                Penerima: ser.penerima,
+                KodeSimpan: ser.kode_simpan,
+                KodeBagianOrganisasi: parseInt(ser.kode_bagian_organisasi),
+                Perihal: ser.perihal,
+                Prioritas: ser.prioritas,
+                KlasifikasiSurat: ser.klasifikasi_surat,
+                MasaRetensi: ser.retensi,
+                Tembusan: ser.tembusan,
+                IsiSurat: ser.isi_surat,
+                AlamatFileLampiran: ser.fileLampiran[0].name,
+                Reviewer: ser.reviewer,
+                Approver: "",
+                Status: status,
+            }
+                console.log(data)
+    
+            xg.ajax({
+                url: 'http://localhost:31602/api/SuratKeluar/Insert',
+                method: 'POST',
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log("Success... ", result);
+
+                    if (status === "Draft") alert("Data surat keluar berhasil disimpan di Draft.")
+                    else if (status === "Pending") alert("Data surat keluar telah dikirim ke Reviewer.")
+
+                    xg.navigate('home');
+                },
+                error: function (err) {
+                    console.log("Error dude... ", err);
+                },
+                complete: function () {
+                    console.log("Complete... ");
+                }
+            });
+
+        },
+
+        isiKodeOrganisasi: function () {
+            var userId = xg.serialize().pengirim;
+            userId = parseInt(userId);
+            console.log("INI ID USERNYA ZXZXCZXCXZC ", userId);
+
+            xg.ajax({
+                url: 'http://localhost:31602/api/User/getDivisi?Id=' + userId,
+                method: 'POST',
+                contentType: "application/text; charset=utf-8",
+                success: function (result) {
+                    console.log("Success... ");
+                    console.log(result);
+                    $('[name="kode_bagian_organisasi"]').val(result.IdDivisi);
+                    $('[name="kode_divisi"]').val(result.KodeDivisi);
+                    $('[name="direktorat"]').val(result.NamaDirektorat);
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+                complete: function () {
+                    console.log("Complete");
+                }
+            });
+
+        },
+
         funcName: function () {
             
         }

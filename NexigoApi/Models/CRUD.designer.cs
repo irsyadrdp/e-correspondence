@@ -30,18 +30,24 @@ namespace NexigoApi.Models
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void Insertuser_table(user_table instance);
-    partial void Updateuser_table(user_table instance);
-    partial void Deleteuser_table(user_table instance);
     partial void Insertdirektorat_table(direktorat_table instance);
     partial void Updatedirektorat_table(direktorat_table instance);
     partial void Deletedirektorat_table(direktorat_table instance);
+    partial void Insertuser_table(user_table instance);
+    partial void Updateuser_table(user_table instance);
+    partial void Deleteuser_table(user_table instance);
     partial void Insertdivisi_table(divisi_table instance);
     partial void Updatedivisi_table(divisi_table instance);
     partial void Deletedivisi_table(divisi_table instance);
     partial void Insertinbox_table(inbox_table instance);
     partial void Updateinbox_table(inbox_table instance);
     partial void Deleteinbox_table(inbox_table instance);
+    partial void Insertmemorandum_table(memorandum_table instance);
+    partial void Updatememorandum_table(memorandum_table instance);
+    partial void Deletememorandum_table(memorandum_table instance);
+    partial void Insertsurat_keluar_table(surat_keluar_table instance);
+    partial void Updatesurat_keluar_table(surat_keluar_table instance);
+    partial void Deletesurat_keluar_table(surat_keluar_table instance);
     partial void Insertsurat_masuk_table(surat_masuk_table instance);
     partial void Updatesurat_masuk_table(surat_masuk_table instance);
     partial void Deletesurat_masuk_table(surat_masuk_table instance);
@@ -77,19 +83,19 @@ namespace NexigoApi.Models
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<user_table> user_tables
-		{
-			get
-			{
-				return this.GetTable<user_table>();
-			}
-		}
-		
 		public System.Data.Linq.Table<direktorat_table> direktorat_tables
 		{
 			get
 			{
 				return this.GetTable<direktorat_table>();
+			}
+		}
+		
+		public System.Data.Linq.Table<user_table> user_tables
+		{
+			get
+			{
+				return this.GetTable<user_table>();
 			}
 		}
 		
@@ -109,12 +115,142 @@ namespace NexigoApi.Models
 			}
 		}
 		
+		public System.Data.Linq.Table<memorandum_table> memorandum_tables
+		{
+			get
+			{
+				return this.GetTable<memorandum_table>();
+			}
+		}
+		
+		public System.Data.Linq.Table<surat_keluar_table> surat_keluar_tables
+		{
+			get
+			{
+				return this.GetTable<surat_keluar_table>();
+			}
+		}
+		
 		public System.Data.Linq.Table<surat_masuk_table> surat_masuk_tables
 		{
 			get
 			{
 				return this.GetTable<surat_masuk_table>();
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.direktorat_table")]
+	public partial class direktorat_table : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id_direktorat;
+		
+		private string _nama_direktorat;
+		
+		private EntitySet<divisi_table> _divisi_tables;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onid_direktoratChanging(int value);
+    partial void Onid_direktoratChanged();
+    partial void Onnama_direktoratChanging(string value);
+    partial void Onnama_direktoratChanged();
+    #endregion
+		
+		public direktorat_table()
+		{
+			this._divisi_tables = new EntitySet<divisi_table>(new Action<divisi_table>(this.attach_divisi_tables), new Action<divisi_table>(this.detach_divisi_tables));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_direktorat", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id_direktorat
+		{
+			get
+			{
+				return this._id_direktorat;
+			}
+			set
+			{
+				if ((this._id_direktorat != value))
+				{
+					this.Onid_direktoratChanging(value);
+					this.SendPropertyChanging();
+					this._id_direktorat = value;
+					this.SendPropertyChanged("id_direktorat");
+					this.Onid_direktoratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nama_direktorat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string nama_direktorat
+		{
+			get
+			{
+				return this._nama_direktorat;
+			}
+			set
+			{
+				if ((this._nama_direktorat != value))
+				{
+					this.Onnama_direktoratChanging(value);
+					this.SendPropertyChanging();
+					this._nama_direktorat = value;
+					this.SendPropertyChanged("nama_direktorat");
+					this.Onnama_direktoratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="direktorat_table_divisi_table", Storage="_divisi_tables", ThisKey="id_direktorat", OtherKey="id_direktorat")]
+		public EntitySet<divisi_table> divisi_tables
+		{
+			get
+			{
+				return this._divisi_tables;
+			}
+			set
+			{
+				this._divisi_tables.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_divisi_tables(divisi_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.direktorat_table = this;
+		}
+		
+		private void detach_divisi_tables(divisi_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.direktorat_table = null;
 		}
 	}
 	
@@ -139,6 +275,10 @@ namespace NexigoApi.Models
 		private int _id_divisi;
 		
 		private EntitySet<inbox_table> _inbox_tables;
+		
+		private EntitySet<memorandum_table> _memorandum_tables;
+		
+		private EntitySet<surat_keluar_table> _surat_keluar_tables;
 		
 		private EntitySet<surat_masuk_table> _surat_masuk_tables;
 		
@@ -167,6 +307,8 @@ namespace NexigoApi.Models
 		public user_table()
 		{
 			this._inbox_tables = new EntitySet<inbox_table>(new Action<inbox_table>(this.attach_inbox_tables), new Action<inbox_table>(this.detach_inbox_tables));
+			this._memorandum_tables = new EntitySet<memorandum_table>(new Action<memorandum_table>(this.attach_memorandum_tables), new Action<memorandum_table>(this.detach_memorandum_tables));
+			this._surat_keluar_tables = new EntitySet<surat_keluar_table>(new Action<surat_keluar_table>(this.attach_surat_keluar_tables), new Action<surat_keluar_table>(this.detach_surat_keluar_tables));
 			this._surat_masuk_tables = new EntitySet<surat_masuk_table>(new Action<surat_masuk_table>(this.attach_surat_masuk_tables), new Action<surat_masuk_table>(this.detach_surat_masuk_tables));
 			this._divisi_table = default(EntityRef<divisi_table>);
 			OnCreated();
@@ -329,6 +471,32 @@ namespace NexigoApi.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_table_memorandum_table", Storage="_memorandum_tables", ThisKey="id_user", OtherKey="pengirim")]
+		public EntitySet<memorandum_table> memorandum_tables
+		{
+			get
+			{
+				return this._memorandum_tables;
+			}
+			set
+			{
+				this._memorandum_tables.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_table_surat_keluar_table", Storage="_surat_keluar_tables", ThisKey="id_user", OtherKey="pengirim")]
+		public EntitySet<surat_keluar_table> surat_keluar_tables
+		{
+			get
+			{
+				return this._surat_keluar_tables;
+			}
+			set
+			{
+				this._surat_keluar_tables.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_table_surat_masuk_table", Storage="_surat_masuk_tables", ThisKey="id_user", OtherKey="penerima")]
 		public EntitySet<surat_masuk_table> surat_masuk_tables
 		{
@@ -408,6 +576,30 @@ namespace NexigoApi.Models
 			entity.user_table = null;
 		}
 		
+		private void attach_memorandum_tables(memorandum_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.user_table = this;
+		}
+		
+		private void detach_memorandum_tables(memorandum_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.user_table = null;
+		}
+		
+		private void attach_surat_keluar_tables(surat_keluar_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.user_table = this;
+		}
+		
+		private void detach_surat_keluar_tables(surat_keluar_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.user_table = null;
+		}
+		
 		private void attach_surat_masuk_tables(surat_masuk_table entity)
 		{
 			this.SendPropertyChanging();
@@ -421,120 +613,6 @@ namespace NexigoApi.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.direktorat_table")]
-	public partial class direktorat_table : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id_direktorat;
-		
-		private string _nama_direktorat;
-		
-		private EntitySet<divisi_table> _divisi_tables;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void Onid_direktoratChanging(int value);
-    partial void Onid_direktoratChanged();
-    partial void Onnama_direktoratChanging(string value);
-    partial void Onnama_direktoratChanged();
-    #endregion
-		
-		public direktorat_table()
-		{
-			this._divisi_tables = new EntitySet<divisi_table>(new Action<divisi_table>(this.attach_divisi_tables), new Action<divisi_table>(this.detach_divisi_tables));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_direktorat", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id_direktorat
-		{
-			get
-			{
-				return this._id_direktorat;
-			}
-			set
-			{
-				if ((this._id_direktorat != value))
-				{
-					this.Onid_direktoratChanging(value);
-					this.SendPropertyChanging();
-					this._id_direktorat = value;
-					this.SendPropertyChanged("id_direktorat");
-					this.Onid_direktoratChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nama_direktorat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string nama_direktorat
-		{
-			get
-			{
-				return this._nama_direktorat;
-			}
-			set
-			{
-				if ((this._nama_direktorat != value))
-				{
-					this.Onnama_direktoratChanging(value);
-					this.SendPropertyChanging();
-					this._nama_direktorat = value;
-					this.SendPropertyChanged("nama_direktorat");
-					this.Onnama_direktoratChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="direktorat_table_divisi_table", Storage="_divisi_tables", ThisKey="id_direktorat", OtherKey="id_direktorat")]
-		public EntitySet<divisi_table> divisi_tables
-		{
-			get
-			{
-				return this._divisi_tables;
-			}
-			set
-			{
-				this._divisi_tables.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_divisi_tables(divisi_table entity)
-		{
-			this.SendPropertyChanging();
-			entity.direktorat_table = this;
-		}
-		
-		private void detach_divisi_tables(divisi_table entity)
-		{
-			this.SendPropertyChanging();
-			entity.direktorat_table = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.divisi_table")]
 	public partial class divisi_table : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -545,9 +623,15 @@ namespace NexigoApi.Models
 		
 		private int _id_direktorat;
 		
+		private string _kode_divisi;
+		
 		private string _nama_divisi;
 		
 		private EntitySet<user_table> _user_tables;
+		
+		private EntitySet<memorandum_table> _memorandum_tables;
+		
+		private EntitySet<surat_keluar_table> _surat_keluar_tables;
 		
 		private EntitySet<surat_masuk_table> _surat_masuk_tables;
 		
@@ -561,6 +645,8 @@ namespace NexigoApi.Models
     partial void Onid_divisiChanged();
     partial void Onid_direktoratChanging(int value);
     partial void Onid_direktoratChanged();
+    partial void Onkode_divisiChanging(string value);
+    partial void Onkode_divisiChanged();
     partial void Onnama_divisiChanging(string value);
     partial void Onnama_divisiChanged();
     #endregion
@@ -568,6 +654,8 @@ namespace NexigoApi.Models
 		public divisi_table()
 		{
 			this._user_tables = new EntitySet<user_table>(new Action<user_table>(this.attach_user_tables), new Action<user_table>(this.detach_user_tables));
+			this._memorandum_tables = new EntitySet<memorandum_table>(new Action<memorandum_table>(this.attach_memorandum_tables), new Action<memorandum_table>(this.detach_memorandum_tables));
+			this._surat_keluar_tables = new EntitySet<surat_keluar_table>(new Action<surat_keluar_table>(this.attach_surat_keluar_tables), new Action<surat_keluar_table>(this.detach_surat_keluar_tables));
 			this._surat_masuk_tables = new EntitySet<surat_masuk_table>(new Action<surat_masuk_table>(this.attach_surat_masuk_tables), new Action<surat_masuk_table>(this.detach_surat_masuk_tables));
 			this._direktorat_table = default(EntityRef<direktorat_table>);
 			OnCreated();
@@ -617,6 +705,26 @@ namespace NexigoApi.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kode_divisi", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string kode_divisi
+		{
+			get
+			{
+				return this._kode_divisi;
+			}
+			set
+			{
+				if ((this._kode_divisi != value))
+				{
+					this.Onkode_divisiChanging(value);
+					this.SendPropertyChanging();
+					this._kode_divisi = value;
+					this.SendPropertyChanged("kode_divisi");
+					this.Onkode_divisiChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nama_divisi", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string nama_divisi
 		{
@@ -647,6 +755,32 @@ namespace NexigoApi.Models
 			set
 			{
 				this._user_tables.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="divisi_table_memorandum_table", Storage="_memorandum_tables", ThisKey="id_divisi", OtherKey="kode_bagian_organisasi")]
+		public EntitySet<memorandum_table> memorandum_tables
+		{
+			get
+			{
+				return this._memorandum_tables;
+			}
+			set
+			{
+				this._memorandum_tables.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="divisi_table_surat_keluar_table", Storage="_surat_keluar_tables", ThisKey="id_divisi", OtherKey="kode_bagian_organisasi")]
+		public EntitySet<surat_keluar_table> surat_keluar_tables
+		{
+			get
+			{
+				return this._surat_keluar_tables;
+			}
+			set
+			{
+				this._surat_keluar_tables.Assign(value);
 			}
 		}
 		
@@ -724,6 +858,30 @@ namespace NexigoApi.Models
 		}
 		
 		private void detach_user_tables(user_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.divisi_table = null;
+		}
+		
+		private void attach_memorandum_tables(memorandum_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.divisi_table = this;
+		}
+		
+		private void detach_memorandum_tables(memorandum_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.divisi_table = null;
+		}
+		
+		private void attach_surat_keluar_tables(surat_keluar_table entity)
+		{
+			this.SendPropertyChanging();
+			entity.divisi_table = this;
+		}
+		
+		private void detach_surat_keluar_tables(surat_keluar_table entity)
 		{
 			this.SendPropertyChanging();
 			entity.divisi_table = null;
@@ -894,7 +1052,7 @@ namespace NexigoApi.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_waktu_masuk", DbType="DateTime NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_waktu_masuk", DbType="Date NOT NULL")]
 		public System.DateTime waktu_masuk
 		{
 			get
@@ -962,6 +1120,1158 @@ namespace NexigoApi.Models
 					else
 					{
 						this._id_user = default(int);
+					}
+					this.SendPropertyChanged("user_table");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.memorandum_table")]
+	public partial class memorandum_table : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id_memorandum;
+		
+		private string _tempat;
+		
+		private System.DateTime _tanggal;
+		
+		private string _nomor;
+		
+		private int _pengirim;
+		
+		private int _penerima;
+		
+		private string _kode_simpan;
+		
+		private int _kode_bagian_organisasi;
+		
+		private string _perihal;
+		
+		private string _prioritas;
+		
+		private string _klasifikasi_surat;
+		
+		private System.DateTime _masa_retensi;
+		
+		private int _tembusan;
+		
+		private string _isi_surat;
+		
+		private string _alamat_file_lampiran;
+		
+		private int _reviewer;
+		
+		private System.Nullable<int> _approver;
+		
+		private string _status;
+		
+		private EntityRef<divisi_table> _divisi_table;
+		
+		private EntityRef<user_table> _user_table;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onid_memorandumChanging(int value);
+    partial void Onid_memorandumChanged();
+    partial void OntempatChanging(string value);
+    partial void OntempatChanged();
+    partial void OntanggalChanging(System.DateTime value);
+    partial void OntanggalChanged();
+    partial void OnnomorChanging(string value);
+    partial void OnnomorChanged();
+    partial void OnpengirimChanging(int value);
+    partial void OnpengirimChanged();
+    partial void OnpenerimaChanging(int value);
+    partial void OnpenerimaChanged();
+    partial void Onkode_simpanChanging(string value);
+    partial void Onkode_simpanChanged();
+    partial void Onkode_bagian_organisasiChanging(int value);
+    partial void Onkode_bagian_organisasiChanged();
+    partial void OnperihalChanging(string value);
+    partial void OnperihalChanged();
+    partial void OnprioritasChanging(string value);
+    partial void OnprioritasChanged();
+    partial void Onklasifikasi_suratChanging(string value);
+    partial void Onklasifikasi_suratChanged();
+    partial void Onmasa_retensiChanging(System.DateTime value);
+    partial void Onmasa_retensiChanged();
+    partial void OntembusanChanging(int value);
+    partial void OntembusanChanged();
+    partial void Onisi_suratChanging(string value);
+    partial void Onisi_suratChanged();
+    partial void Onalamat_file_lampiranChanging(string value);
+    partial void Onalamat_file_lampiranChanged();
+    partial void OnreviewerChanging(int value);
+    partial void OnreviewerChanged();
+    partial void OnapproverChanging(System.Nullable<int> value);
+    partial void OnapproverChanged();
+    partial void OnstatusChanging(string value);
+    partial void OnstatusChanged();
+    #endregion
+		
+		public memorandum_table()
+		{
+			this._divisi_table = default(EntityRef<divisi_table>);
+			this._user_table = default(EntityRef<user_table>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_memorandum", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id_memorandum
+		{
+			get
+			{
+				return this._id_memorandum;
+			}
+			set
+			{
+				if ((this._id_memorandum != value))
+				{
+					this.Onid_memorandumChanging(value);
+					this.SendPropertyChanging();
+					this._id_memorandum = value;
+					this.SendPropertyChanged("id_memorandum");
+					this.Onid_memorandumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tempat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string tempat
+		{
+			get
+			{
+				return this._tempat;
+			}
+			set
+			{
+				if ((this._tempat != value))
+				{
+					this.OntempatChanging(value);
+					this.SendPropertyChanging();
+					this._tempat = value;
+					this.SendPropertyChanged("tempat");
+					this.OntempatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tanggal", DbType="Date NOT NULL")]
+		public System.DateTime tanggal
+		{
+			get
+			{
+				return this._tanggal;
+			}
+			set
+			{
+				if ((this._tanggal != value))
+				{
+					this.OntanggalChanging(value);
+					this.SendPropertyChanging();
+					this._tanggal = value;
+					this.SendPropertyChanged("tanggal");
+					this.OntanggalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nomor", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string nomor
+		{
+			get
+			{
+				return this._nomor;
+			}
+			set
+			{
+				if ((this._nomor != value))
+				{
+					this.OnnomorChanging(value);
+					this.SendPropertyChanging();
+					this._nomor = value;
+					this.SendPropertyChanged("nomor");
+					this.OnnomorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pengirim", DbType="Int NOT NULL")]
+		public int pengirim
+		{
+			get
+			{
+				return this._pengirim;
+			}
+			set
+			{
+				if ((this._pengirim != value))
+				{
+					if (this._user_table.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnpengirimChanging(value);
+					this.SendPropertyChanging();
+					this._pengirim = value;
+					this.SendPropertyChanged("pengirim");
+					this.OnpengirimChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_penerima", DbType="Int NOT NULL")]
+		public int penerima
+		{
+			get
+			{
+				return this._penerima;
+			}
+			set
+			{
+				if ((this._penerima != value))
+				{
+					this.OnpenerimaChanging(value);
+					this.SendPropertyChanging();
+					this._penerima = value;
+					this.SendPropertyChanged("penerima");
+					this.OnpenerimaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kode_simpan", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string kode_simpan
+		{
+			get
+			{
+				return this._kode_simpan;
+			}
+			set
+			{
+				if ((this._kode_simpan != value))
+				{
+					this.Onkode_simpanChanging(value);
+					this.SendPropertyChanging();
+					this._kode_simpan = value;
+					this.SendPropertyChanged("kode_simpan");
+					this.Onkode_simpanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kode_bagian_organisasi", DbType="Int NOT NULL")]
+		public int kode_bagian_organisasi
+		{
+			get
+			{
+				return this._kode_bagian_organisasi;
+			}
+			set
+			{
+				if ((this._kode_bagian_organisasi != value))
+				{
+					if (this._divisi_table.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onkode_bagian_organisasiChanging(value);
+					this.SendPropertyChanging();
+					this._kode_bagian_organisasi = value;
+					this.SendPropertyChanged("kode_bagian_organisasi");
+					this.Onkode_bagian_organisasiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_perihal", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string perihal
+		{
+			get
+			{
+				return this._perihal;
+			}
+			set
+			{
+				if ((this._perihal != value))
+				{
+					this.OnperihalChanging(value);
+					this.SendPropertyChanging();
+					this._perihal = value;
+					this.SendPropertyChanged("perihal");
+					this.OnperihalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_prioritas", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string prioritas
+		{
+			get
+			{
+				return this._prioritas;
+			}
+			set
+			{
+				if ((this._prioritas != value))
+				{
+					this.OnprioritasChanging(value);
+					this.SendPropertyChanging();
+					this._prioritas = value;
+					this.SendPropertyChanged("prioritas");
+					this.OnprioritasChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_klasifikasi_surat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string klasifikasi_surat
+		{
+			get
+			{
+				return this._klasifikasi_surat;
+			}
+			set
+			{
+				if ((this._klasifikasi_surat != value))
+				{
+					this.Onklasifikasi_suratChanging(value);
+					this.SendPropertyChanging();
+					this._klasifikasi_surat = value;
+					this.SendPropertyChanged("klasifikasi_surat");
+					this.Onklasifikasi_suratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_masa_retensi", DbType="Date NOT NULL")]
+		public System.DateTime masa_retensi
+		{
+			get
+			{
+				return this._masa_retensi;
+			}
+			set
+			{
+				if ((this._masa_retensi != value))
+				{
+					this.Onmasa_retensiChanging(value);
+					this.SendPropertyChanging();
+					this._masa_retensi = value;
+					this.SendPropertyChanged("masa_retensi");
+					this.Onmasa_retensiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tembusan", DbType="Int NOT NULL")]
+		public int tembusan
+		{
+			get
+			{
+				return this._tembusan;
+			}
+			set
+			{
+				if ((this._tembusan != value))
+				{
+					this.OntembusanChanging(value);
+					this.SendPropertyChanging();
+					this._tembusan = value;
+					this.SendPropertyChanged("tembusan");
+					this.OntembusanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isi_surat", DbType="NVarChar(4000) NOT NULL", CanBeNull=false)]
+		public string isi_surat
+		{
+			get
+			{
+				return this._isi_surat;
+			}
+			set
+			{
+				if ((this._isi_surat != value))
+				{
+					this.Onisi_suratChanging(value);
+					this.SendPropertyChanging();
+					this._isi_surat = value;
+					this.SendPropertyChanged("isi_surat");
+					this.Onisi_suratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_alamat_file_lampiran", DbType="NVarChar(150)")]
+		public string alamat_file_lampiran
+		{
+			get
+			{
+				return this._alamat_file_lampiran;
+			}
+			set
+			{
+				if ((this._alamat_file_lampiran != value))
+				{
+					this.Onalamat_file_lampiranChanging(value);
+					this.SendPropertyChanging();
+					this._alamat_file_lampiran = value;
+					this.SendPropertyChanged("alamat_file_lampiran");
+					this.Onalamat_file_lampiranChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reviewer", DbType="Int NOT NULL")]
+		public int reviewer
+		{
+			get
+			{
+				return this._reviewer;
+			}
+			set
+			{
+				if ((this._reviewer != value))
+				{
+					this.OnreviewerChanging(value);
+					this.SendPropertyChanging();
+					this._reviewer = value;
+					this.SendPropertyChanged("reviewer");
+					this.OnreviewerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_approver", DbType="Int")]
+		public System.Nullable<int> approver
+		{
+			get
+			{
+				return this._approver;
+			}
+			set
+			{
+				if ((this._approver != value))
+				{
+					this.OnapproverChanging(value);
+					this.SendPropertyChanging();
+					this._approver = value;
+					this.SendPropertyChanged("approver");
+					this.OnapproverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="divisi_table_memorandum_table", Storage="_divisi_table", ThisKey="kode_bagian_organisasi", OtherKey="id_divisi", IsForeignKey=true)]
+		public divisi_table divisi_table
+		{
+			get
+			{
+				return this._divisi_table.Entity;
+			}
+			set
+			{
+				divisi_table previousValue = this._divisi_table.Entity;
+				if (((previousValue != value) 
+							|| (this._divisi_table.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._divisi_table.Entity = null;
+						previousValue.memorandum_tables.Remove(this);
+					}
+					this._divisi_table.Entity = value;
+					if ((value != null))
+					{
+						value.memorandum_tables.Add(this);
+						this._kode_bagian_organisasi = value.id_divisi;
+					}
+					else
+					{
+						this._kode_bagian_organisasi = default(int);
+					}
+					this.SendPropertyChanged("divisi_table");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_table_memorandum_table", Storage="_user_table", ThisKey="pengirim", OtherKey="id_user", IsForeignKey=true)]
+		public user_table user_table
+		{
+			get
+			{
+				return this._user_table.Entity;
+			}
+			set
+			{
+				user_table previousValue = this._user_table.Entity;
+				if (((previousValue != value) 
+							|| (this._user_table.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user_table.Entity = null;
+						previousValue.memorandum_tables.Remove(this);
+					}
+					this._user_table.Entity = value;
+					if ((value != null))
+					{
+						value.memorandum_tables.Add(this);
+						this._pengirim = value.id_user;
+					}
+					else
+					{
+						this._pengirim = default(int);
+					}
+					this.SendPropertyChanged("user_table");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.surat_keluar_table")]
+	public partial class surat_keluar_table : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id_surat_keluar;
+		
+		private string _bahasa;
+		
+		private string _tempat;
+		
+		private System.DateTime _tanggal;
+		
+		private string _nomor;
+		
+		private int _pengirim;
+		
+		private string _direktorat;
+		
+		private string _penerima;
+		
+		private string _kode_simpan;
+		
+		private int _kode_bagian_organisasi;
+		
+		private string _perihal;
+		
+		private string _prioritas;
+		
+		private string _klasifikasi_surat;
+		
+		private System.DateTime _masa_retensi;
+		
+		private int _tembusan;
+		
+		private string _isi_surat;
+		
+		private string _alamat_file_lampiran;
+		
+		private int _reviewer;
+		
+		private System.Nullable<int> _approver;
+		
+		private string _status;
+		
+		private EntityRef<divisi_table> _divisi_table;
+		
+		private EntityRef<user_table> _user_table;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onid_surat_keluarChanging(int value);
+    partial void Onid_surat_keluarChanged();
+    partial void OnbahasaChanging(string value);
+    partial void OnbahasaChanged();
+    partial void OntempatChanging(string value);
+    partial void OntempatChanged();
+    partial void OntanggalChanging(System.DateTime value);
+    partial void OntanggalChanged();
+    partial void OnnomorChanging(string value);
+    partial void OnnomorChanged();
+    partial void OnpengirimChanging(int value);
+    partial void OnpengirimChanged();
+    partial void OndirektoratChanging(string value);
+    partial void OndirektoratChanged();
+    partial void OnpenerimaChanging(string value);
+    partial void OnpenerimaChanged();
+    partial void Onkode_simpanChanging(string value);
+    partial void Onkode_simpanChanged();
+    partial void Onkode_bagian_organisasiChanging(int value);
+    partial void Onkode_bagian_organisasiChanged();
+    partial void OnperihalChanging(string value);
+    partial void OnperihalChanged();
+    partial void OnprioritasChanging(string value);
+    partial void OnprioritasChanged();
+    partial void Onklasifikasi_suratChanging(string value);
+    partial void Onklasifikasi_suratChanged();
+    partial void Onmasa_retensiChanging(System.DateTime value);
+    partial void Onmasa_retensiChanged();
+    partial void OntembusanChanging(int value);
+    partial void OntembusanChanged();
+    partial void Onisi_suratChanging(string value);
+    partial void Onisi_suratChanged();
+    partial void Onalamat_file_lampiranChanging(string value);
+    partial void Onalamat_file_lampiranChanged();
+    partial void OnreviewerChanging(int value);
+    partial void OnreviewerChanged();
+    partial void OnapproverChanging(System.Nullable<int> value);
+    partial void OnapproverChanged();
+    partial void OnstatusChanging(string value);
+    partial void OnstatusChanged();
+    #endregion
+		
+		public surat_keluar_table()
+		{
+			this._divisi_table = default(EntityRef<divisi_table>);
+			this._user_table = default(EntityRef<user_table>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_surat_keluar", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id_surat_keluar
+		{
+			get
+			{
+				return this._id_surat_keluar;
+			}
+			set
+			{
+				if ((this._id_surat_keluar != value))
+				{
+					this.Onid_surat_keluarChanging(value);
+					this.SendPropertyChanging();
+					this._id_surat_keluar = value;
+					this.SendPropertyChanged("id_surat_keluar");
+					this.Onid_surat_keluarChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bahasa", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string bahasa
+		{
+			get
+			{
+				return this._bahasa;
+			}
+			set
+			{
+				if ((this._bahasa != value))
+				{
+					this.OnbahasaChanging(value);
+					this.SendPropertyChanging();
+					this._bahasa = value;
+					this.SendPropertyChanged("bahasa");
+					this.OnbahasaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tempat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string tempat
+		{
+			get
+			{
+				return this._tempat;
+			}
+			set
+			{
+				if ((this._tempat != value))
+				{
+					this.OntempatChanging(value);
+					this.SendPropertyChanging();
+					this._tempat = value;
+					this.SendPropertyChanged("tempat");
+					this.OntempatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tanggal", DbType="Date NOT NULL")]
+		public System.DateTime tanggal
+		{
+			get
+			{
+				return this._tanggal;
+			}
+			set
+			{
+				if ((this._tanggal != value))
+				{
+					this.OntanggalChanging(value);
+					this.SendPropertyChanging();
+					this._tanggal = value;
+					this.SendPropertyChanged("tanggal");
+					this.OntanggalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nomor", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string nomor
+		{
+			get
+			{
+				return this._nomor;
+			}
+			set
+			{
+				if ((this._nomor != value))
+				{
+					this.OnnomorChanging(value);
+					this.SendPropertyChanging();
+					this._nomor = value;
+					this.SendPropertyChanged("nomor");
+					this.OnnomorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pengirim", DbType="Int NOT NULL")]
+		public int pengirim
+		{
+			get
+			{
+				return this._pengirim;
+			}
+			set
+			{
+				if ((this._pengirim != value))
+				{
+					if (this._user_table.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnpengirimChanging(value);
+					this.SendPropertyChanging();
+					this._pengirim = value;
+					this.SendPropertyChanged("pengirim");
+					this.OnpengirimChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_direktorat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string direktorat
+		{
+			get
+			{
+				return this._direktorat;
+			}
+			set
+			{
+				if ((this._direktorat != value))
+				{
+					this.OndirektoratChanging(value);
+					this.SendPropertyChanging();
+					this._direktorat = value;
+					this.SendPropertyChanged("direktorat");
+					this.OndirektoratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_penerima", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string penerima
+		{
+			get
+			{
+				return this._penerima;
+			}
+			set
+			{
+				if ((this._penerima != value))
+				{
+					this.OnpenerimaChanging(value);
+					this.SendPropertyChanging();
+					this._penerima = value;
+					this.SendPropertyChanged("penerima");
+					this.OnpenerimaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kode_simpan", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string kode_simpan
+		{
+			get
+			{
+				return this._kode_simpan;
+			}
+			set
+			{
+				if ((this._kode_simpan != value))
+				{
+					this.Onkode_simpanChanging(value);
+					this.SendPropertyChanging();
+					this._kode_simpan = value;
+					this.SendPropertyChanged("kode_simpan");
+					this.Onkode_simpanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kode_bagian_organisasi", DbType="Int NOT NULL")]
+		public int kode_bagian_organisasi
+		{
+			get
+			{
+				return this._kode_bagian_organisasi;
+			}
+			set
+			{
+				if ((this._kode_bagian_organisasi != value))
+				{
+					if (this._divisi_table.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onkode_bagian_organisasiChanging(value);
+					this.SendPropertyChanging();
+					this._kode_bagian_organisasi = value;
+					this.SendPropertyChanged("kode_bagian_organisasi");
+					this.Onkode_bagian_organisasiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_perihal", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string perihal
+		{
+			get
+			{
+				return this._perihal;
+			}
+			set
+			{
+				if ((this._perihal != value))
+				{
+					this.OnperihalChanging(value);
+					this.SendPropertyChanging();
+					this._perihal = value;
+					this.SendPropertyChanged("perihal");
+					this.OnperihalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_prioritas", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string prioritas
+		{
+			get
+			{
+				return this._prioritas;
+			}
+			set
+			{
+				if ((this._prioritas != value))
+				{
+					this.OnprioritasChanging(value);
+					this.SendPropertyChanging();
+					this._prioritas = value;
+					this.SendPropertyChanged("prioritas");
+					this.OnprioritasChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_klasifikasi_surat", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string klasifikasi_surat
+		{
+			get
+			{
+				return this._klasifikasi_surat;
+			}
+			set
+			{
+				if ((this._klasifikasi_surat != value))
+				{
+					this.Onklasifikasi_suratChanging(value);
+					this.SendPropertyChanging();
+					this._klasifikasi_surat = value;
+					this.SendPropertyChanged("klasifikasi_surat");
+					this.Onklasifikasi_suratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_masa_retensi", DbType="Date NOT NULL")]
+		public System.DateTime masa_retensi
+		{
+			get
+			{
+				return this._masa_retensi;
+			}
+			set
+			{
+				if ((this._masa_retensi != value))
+				{
+					this.Onmasa_retensiChanging(value);
+					this.SendPropertyChanging();
+					this._masa_retensi = value;
+					this.SendPropertyChanged("masa_retensi");
+					this.Onmasa_retensiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tembusan", DbType="Int NOT NULL")]
+		public int tembusan
+		{
+			get
+			{
+				return this._tembusan;
+			}
+			set
+			{
+				if ((this._tembusan != value))
+				{
+					this.OntembusanChanging(value);
+					this.SendPropertyChanging();
+					this._tembusan = value;
+					this.SendPropertyChanged("tembusan");
+					this.OntembusanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isi_surat", DbType="NVarChar(4000) NOT NULL", CanBeNull=false)]
+		public string isi_surat
+		{
+			get
+			{
+				return this._isi_surat;
+			}
+			set
+			{
+				if ((this._isi_surat != value))
+				{
+					this.Onisi_suratChanging(value);
+					this.SendPropertyChanging();
+					this._isi_surat = value;
+					this.SendPropertyChanged("isi_surat");
+					this.Onisi_suratChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_alamat_file_lampiran", DbType="NVarChar(150)")]
+		public string alamat_file_lampiran
+		{
+			get
+			{
+				return this._alamat_file_lampiran;
+			}
+			set
+			{
+				if ((this._alamat_file_lampiran != value))
+				{
+					this.Onalamat_file_lampiranChanging(value);
+					this.SendPropertyChanging();
+					this._alamat_file_lampiran = value;
+					this.SendPropertyChanged("alamat_file_lampiran");
+					this.Onalamat_file_lampiranChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reviewer", DbType="Int NOT NULL")]
+		public int reviewer
+		{
+			get
+			{
+				return this._reviewer;
+			}
+			set
+			{
+				if ((this._reviewer != value))
+				{
+					this.OnreviewerChanging(value);
+					this.SendPropertyChanging();
+					this._reviewer = value;
+					this.SendPropertyChanged("reviewer");
+					this.OnreviewerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_approver", DbType="Int")]
+		public System.Nullable<int> approver
+		{
+			get
+			{
+				return this._approver;
+			}
+			set
+			{
+				if ((this._approver != value))
+				{
+					this.OnapproverChanging(value);
+					this.SendPropertyChanging();
+					this._approver = value;
+					this.SendPropertyChanged("approver");
+					this.OnapproverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="divisi_table_surat_keluar_table", Storage="_divisi_table", ThisKey="kode_bagian_organisasi", OtherKey="id_divisi", IsForeignKey=true)]
+		public divisi_table divisi_table
+		{
+			get
+			{
+				return this._divisi_table.Entity;
+			}
+			set
+			{
+				divisi_table previousValue = this._divisi_table.Entity;
+				if (((previousValue != value) 
+							|| (this._divisi_table.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._divisi_table.Entity = null;
+						previousValue.surat_keluar_tables.Remove(this);
+					}
+					this._divisi_table.Entity = value;
+					if ((value != null))
+					{
+						value.surat_keluar_tables.Add(this);
+						this._kode_bagian_organisasi = value.id_divisi;
+					}
+					else
+					{
+						this._kode_bagian_organisasi = default(int);
+					}
+					this.SendPropertyChanged("divisi_table");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_table_surat_keluar_table", Storage="_user_table", ThisKey="pengirim", OtherKey="id_user", IsForeignKey=true)]
+		public user_table user_table
+		{
+			get
+			{
+				return this._user_table.Entity;
+			}
+			set
+			{
+				user_table previousValue = this._user_table.Entity;
+				if (((previousValue != value) 
+							|| (this._user_table.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user_table.Entity = null;
+						previousValue.surat_keluar_tables.Remove(this);
+					}
+					this._user_table.Entity = value;
+					if ((value != null))
+					{
+						value.surat_keluar_tables.Add(this);
+						this._pengirim = value.id_user;
+					}
+					else
+					{
+						this._pengirim = default(int);
 					}
 					this.SendPropertyChanged("user_table");
 				}

@@ -21,12 +21,18 @@ namespace NexigoApi.Controllers
         public string Email { get; set; }
         public string Password { get; set; }
     }
-    public class dataPenerima
+    public class dataSelect
     {
         public int value { get; set; }
         public string text { get; set; }
     }
-    
+
+    public class getDivDir {
+        public int IdDivisi { get; set; }
+        public string KodeDivisi { get; set; }
+        public string NamaDirektorat {get; set;}
+    }
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
@@ -61,18 +67,35 @@ namespace NexigoApi.Controllers
             return getdata;
         }
 
-        //get all data Penerima 
+        //get all user data by role
         [HttpPost]
-        public List<dataPenerima> GetPenerima()
+        public List<dataSelect> ReadAllByRole(string Role)
         {
             var query = from UserData in context.user_tables
-                        select new dataPenerima
-                        { 
+                        where UserData.role == Role
+                        select new dataSelect
+                        {
                             value = UserData.id_user,
                             text = UserData.nama_user,
                         };
 
-            List<dataPenerima> data = query.ToList();
+            List<dataSelect> data = query.ToList();
+
+            return data;
+        }
+
+        //get all user data 
+        [HttpPost]
+        public List<dataSelect> GetPenerima()
+        {
+            var query = from UserData in context.user_tables
+                        select new dataSelect
+                        {
+                            value = UserData.id_user,
+                            text = UserData.nama_user,
+                        };
+
+            List<dataSelect> data = query.ToList();
 
             return data;
         }
@@ -137,24 +160,37 @@ namespace NexigoApi.Controllers
             }
         }
 
-        //get user id_divisi
-        [HttpPost]
-        public IQueryable<int> getDivisi(int Id)
-        {
-            IQueryable<int> item = from UserData in context.user_tables
-                       where UserData.id_user == Id
-                       select UserData.id_divisi;
-            return item; 
-        }
-
         //get nama_user by id
         [HttpPost]
         public string getName(int Id)
         {
             string item = (from UserData in context.user_tables
-                                   where UserData.id_user == Id
-                                   select UserData.nama_user).Single();
+                           where UserData.id_user == Id
+                           select UserData.nama_user).Single();
             return item;
         }
+
+        //get user id_divisi
+        [HttpPost]
+        public IHttpActionResult getDivisi(int Id)
+        {
+            int idDivisi = (from UserData in context.user_tables
+                                   where UserData.id_user == Id
+                                   select UserData.id_divisi).Single();
+
+            OrganisasiController organisasi = new OrganisasiController();
+            string kodeDivisi = organisasi.getKodeDivisi(idDivisi);
+            string namaDirektorat = organisasi.getNamaDirektorat(idDivisi);
+
+            getDivDir getdata = new getDivDir
+            {
+                IdDivisi = idDivisi,
+                KodeDivisi = kodeDivisi,
+                NamaDirektorat = namaDirektorat,
+            };
+
+            return Ok(getdata);
+        }
+
     }
 }

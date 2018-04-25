@@ -1,22 +1,22 @@
 ﻿var db = {
     menu: [
-        
+
         {//home
             text: '<img src="assets/img/logo2.png" width="50px" style="margin-top:15px; margin-left:20px;">',
-            //text: 'Beranda',
-            //icon: 'fa-home',
             link: 'home'
         },
 
         {//inbox
             text: 'Kotak Masuk',
             icon: 'fa fa-folder',
-            link: 'kotak_masuk/kotak_masuk'
+            link: 'kotak_masuk/kotak_masuk',
+            clas: 'KOTAKMASUK',
         },
 
         {//surat masuk
           text: 'Surat Masuk',
           icon: 'fa fa-file-text-o',
+          clas: 'SURATMASUK',
           menus: [
               {
                   link: 'surat_masuk/buat_surat_masuk',
@@ -34,74 +34,157 @@
           ]
         },
         
-        {//surat keluar
-            text: 'Surat Keluar',
+        {//surat keluar konseptor
+            text: 'Surat Keluar [k]',
             icon: 'fa fa-file-text-o',
+            clas: 'SK_Konseptor',
             menus: [
                 {
                     link: 'surat_keluar/buat_surat_keluar',
                     text: 'Buat Surat Keluar',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
+                    link: 'surat_keluar/pending',
+                    text: 'Pending',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'surat_keluar/draft',
                     text: 'Draft',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
-                    text: 'Revisi Surat Keluar',
+                    link: 'surat_keluar/revisi',
+                    text: 'Revisi',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
-                    text: 'Cek Status Proses',
-                    icon: 'fa fa-genderless',
-                }, {
-                    link: 'main_view_template',
+                    link: 'surat_keluar/archive',
                     text: 'Arsip',
                     icon: 'fa fa-genderless',
-                }, {
-                    link: 'main_view_template',
-                    text: 'Riwayat',
-                    icon: 'fa fa-genderless',
-                }
+                },
             ]
         },
 
-        {//Memorandum
-            text: 'Memorandum',
+        {//Memorandum konseptor
+            text: 'Memorandum [k]',
             icon: 'fa fa-file-o',
+            clas: 'M_Konseptor',
             menus: [
                 {
                     link: 'memorandum/buat_memorandum',
                     text: 'Buat Memorandum',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
+                    link: 'memorandum/pending',
+                    text: 'Pending',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'memorandum/draft',
                     text: 'Draft',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
-                    text: 'Revisi Memorandum',
+                    link: 'memorandum/revisi',
+                    text: 'Revisi',
                     icon: 'fa fa-genderless',
                 }, {
-                    link: 'main_view_template',
-                    text: 'Cek Status Proses',
-                    icon: 'fa fa-genderless',
-                }, {
-                    link: 'main_view_template',
+                    link: 'memorandum/archive',
                     text: 'Arsip',
                     icon: 'fa fa-genderless',
-                }, {
-                    link: 'main_view_template',
-                    text: 'Riwayat',
-                    icon: 'fa fa-genderless',
-                }
+                },
             ]
         },
+
+
+
+        {//surat keluar reviewer
+            text: 'Surat Keluar [r]',
+            icon: 'fa fa-file-text-o',
+            clas: 'SK_Reviewer',
+            menus: [
+                {
+                    link: 'surat_keluar/review_surat_keluar',
+                    text: 'Review Surat Keluar',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'surat_keluar/reviewed',
+                    text: 'Reviewed',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'surat_keluar/revised',
+                    text: 'Revised',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'surat_keluar/archive',
+                    text: 'Arsip',
+                    icon: 'fa fa-genderless',
+                },
+            ]
+        },
+
+        {//Memorandum reviewer
+            text: 'Memorandum [r]',
+            icon: 'fa fa-file-o',
+            clas: 'M_Reviewer',
+            menus: [
+                {
+                    link: 'memorandum/review_memorandum',
+                    text: 'Review Memorandum',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'memorandum/reviewed',
+                    text: 'Reviewed',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'memorandum/revised',
+                    text: 'Revised',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'memorandum/archive',
+                    text: 'Arsip',
+                    icon: 'fa fa-genderless',
+                },
+            ]
+        },
+
+
+        {//surat keluar approver
+            text: 'Surat Keluar [a]',
+            icon: 'fa fa-file-text-o',
+            clas: 'SK_Approver',
+            menus: [
+                {
+                    link: 'surat_keluar/approve_surat_keluar',
+                    text: 'Approve Surat Keluar',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'surat_keluar/archive',
+                    text: 'Arsip',
+                    icon: 'fa fa-genderless',
+                },
+            ]
+        },
+
+        {//Memorandum approver
+            text: 'Memorandum [a]',
+            icon: 'fa fa-file-o',
+            clas: 'M_Approver',
+            menus: [
+                {
+                    link: 'memorandum/approve_memorandum',
+                    text: 'Approve Surat Keluar',
+                    icon: 'fa fa-genderless',
+                }, {
+                    link: 'memorandum/archive',
+                    text: 'Arsip',
+                    icon: 'fa fa-genderless',
+                },
+            ]
+        },
+
 
         {//logout
             text: '<span style="color:#292F33;">LOGOUT</span>',
             icon: 'fa fa-sign-out',
-            link: 'logout'
+            link: 'logout',
+            clas: 'LOGOUT'
         },
 
 
@@ -118,7 +201,8 @@
         //{//biodata
         //    text: 'Biodata',
         //    icon: 'fa fa-user',
-        //    link: 'home/biodata2'
+        //    link: 'home/biodata2',
+        //    clas: 'biodata'
         //},
 
         //{

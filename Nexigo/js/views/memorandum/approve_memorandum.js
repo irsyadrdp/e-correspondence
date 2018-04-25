@@ -4,24 +4,24 @@
         fields: [
             {
                 type: 'panel',
-                text: 'Data Draft Surat Masuk',
+                text: 'Data Approve Memorandum ',
                 offset: 1,
                 cols: 12,
                 fields: [
                     {
                         type: 'grid',
                         text: 'Table',
-                        name: 'gridDraft',
+                        name: 'gridMemorandum',
                         options: {
                             sortable: false,
                             editable: false,
                             filterable: true,
                             pageable: true,
                         },
-                        url: 'http://localhost:31602/api/SuratMasuk/ReadAllDraft',
+                        url: 'http://localhost:31602/api/Memorandum/ReadAllByStatus?Status=Reviewed',
                         fields: [
                             {
-                                name: 'Id_Surat_Masuk',
+                                name: 'Id_Memorandum',
                                 text: 'Id',
                                 type: 'text',
                                 hide: 'true',
@@ -42,6 +42,12 @@
                                 type: 'text',
                             },
                             {
+                                name: 'IdPengirim',
+                                text: 'Id Pengirim',
+                                type: 'text',
+                                hide: 'true',
+                            },
+                            {
                                 name: 'Pengirim',
                                 text: 'Pengirim',
                                 type: 'text',
@@ -58,14 +64,31 @@
                                 type: 'text',
                             },
                             {
-                                name: 'Edit',
-                                text: 'Edit Surat',
-                                template: '<button onclick="xg.call(\'edit\', #:Id_Surat_Masuk#)">Edit</button>',
+                                name: 'IdReviewer',
+                                text: 'Id Reviewer',
+                                type: 'text',
+                                hide: 'true',
                             },
                             {
-                                name: 'Hapus',
-                                text: 'Hapus Surat',
-                                template: '<button onclick="xg.call(\'delete\', #:Id_Surat_Masuk#)">Hapus</button>',
+                                name: 'Reviewer',
+                                text: 'Reviewer',
+                                type: 'text',
+                            },
+                            {
+                                name: 'IdTembusan',
+                                text: 'Id Tembusan',
+                                type: 'text',
+                                hide: 'true',
+                            },
+                            {
+                                name: 'Tembusan',
+                                text: 'Tembusan',
+                                type: 'text',
+                            },
+                            {
+                                name: 'Lihat',
+                                text: 'Lihat Detail Surat',
+                                template: '<button onclick="xg.call(\'lihat\', #:Id_Memorandum#)">Lihat</button>',
                             },
                         ],
                     }
@@ -90,24 +113,9 @@
             else console.log("Anda sudah login");
         },
 
-        delete: function (Id) {
-            xg.ajax({
-                url: 'http://localhost:31602/api/SuratMasuk/Delete?Id=' + Id,
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                },
-                complete: function () {
-                    console.log("complete");
-                    xg.grid.refresh('gridDraft');
-                    alert("Data berhasil dihapus");
-                }
-            });
-        },
-
-        edit: function (Id) {
+        lihat: function (Id) {
             document.cookie = "temp_id=" + Id;
-            xg.navigate('surat_masuk/edit_surat_masuk');
+            xg.navigate('memorandum/edit_approver');
         },
 
         funcName: function () {

@@ -141,5 +141,18 @@ namespace NexigoApi.Controllers
         //    }
         //}
 
+
+        //contoh iquqeryable
+        //get user id_divisi
+        //[HttpPost]
+        //public IQueryable<int> getDivisi(int Id)
+        //{
+        //    IQueryable<int> item = from UserData in context.user_tables
+        //                           where UserData.id_user == Id
+        //                           select UserData.id_divisi;
+
+        //    return item;
+        //}
+
     }
 }

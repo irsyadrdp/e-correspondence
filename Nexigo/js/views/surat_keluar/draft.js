@@ -4,24 +4,24 @@
         fields: [
             {
                 type: 'panel',
-                text: 'Data Draft Surat Masuk',
+                text: 'Data Draft Surat Keluar',
                 offset: 1,
                 cols: 12,
                 fields: [
                     {
                         type: 'grid',
                         text: 'Table',
-                        name: 'gridDraft',
+                        name: 'gridSuratKeluar',
                         options: {
                             sortable: false,
                             editable: false,
                             filterable: true,
                             pageable: true,
                         },
-                        url: 'http://localhost:31602/api/SuratMasuk/ReadAllDraft',
+                        url: 'http://localhost:31602/api/SuratKeluar/ReadAllByStatus?Status=Draft',
                         fields: [
                             {
-                                name: 'Id_Surat_Masuk',
+                                name: 'Id_Surat_Keluar',
                                 text: 'Id',
                                 type: 'text',
                                 hide: 'true',
@@ -42,15 +42,15 @@
                                 type: 'text',
                             },
                             {
+                                name: 'IdPengirim',
+                                text: 'Id Pengirim',
+                                type: 'text',
+                                hide: 'true',
+                            },
+                            {
                                 name: 'Pengirim',
                                 text: 'Pengirim',
                                 type: 'text',
-                            },
-                            {
-                                name: 'IdPenerima',
-                                text: 'Id Penerima',
-                                type: 'text',
-                                hide: 'true',
                             },
                             {
                                 name: 'Penerima',
@@ -58,14 +58,36 @@
                                 type: 'text',
                             },
                             {
+                                name: 'IdReviewer',
+                                text: 'Id Reviewer',
+                                type: 'text',
+                                hide: 'true',
+                            },
+                            {
+                                name: 'Reviewer',
+                                text: 'Reviewer',
+                                type: 'text',
+                            },
+                            {
+                                name: 'IdTembusan',
+                                text: 'Id Tembusan',
+                                type: 'text',
+                                hide: 'true',
+                            },
+                            {
+                                name: 'Tembusan',
+                                text: 'Tembusan',
+                                type: 'text',
+                            },
+                            {
                                 name: 'Edit',
                                 text: 'Edit Surat',
-                                template: '<button onclick="xg.call(\'edit\', #:Id_Surat_Masuk#)">Edit</button>',
+                                template: '<button onclick="xg.call(\'edit\', #:Id_Surat_Keluar#)">Edit</button>',
                             },
                             {
                                 name: 'Hapus',
                                 text: 'Hapus Surat',
-                                template: '<button onclick="xg.call(\'delete\', #:Id_Surat_Masuk#)">Hapus</button>',
+                                template: '<button onclick="xg.call(\'delete\', #:Id_Surat_Keluar#)">Hapus</button>',
                             },
                         ],
                     }
@@ -92,14 +114,14 @@
 
         delete: function (Id) {
             xg.ajax({
-                url: 'http://localhost:31602/api/SuratMasuk/Delete?Id=' + Id,
+                url: 'http://localhost:31602/api/SuratKeluar/Delete?Id=' + Id,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                 },
                 complete: function () {
                     console.log("complete");
-                    xg.grid.refresh('gridDraft');
+                    xg.grid.refresh('gridSuratKeluar');
                     alert("Data berhasil dihapus");
                 }
             });
@@ -107,7 +129,7 @@
 
         edit: function (Id) {
             document.cookie = "temp_id=" + Id;
-            xg.navigate('surat_masuk/edit_surat_masuk');
+            xg.navigate('surat_keluar/edit_surat_keluar');
         },
 
         funcName: function () {

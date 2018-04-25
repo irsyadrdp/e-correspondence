@@ -90,6 +90,8 @@ xg.widget({
         init: function (xg, cb) {
             cb();
 
+            $('.biodata').addClass('hide');
+
             //cek log in
                 let role = $.cookie("role");
                 console.log("asdasdasd ...", role);

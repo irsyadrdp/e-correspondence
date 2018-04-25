@@ -17,7 +17,6 @@ xg.widget({
                             editable: false,
                             filterable: true,
                             pageable: true,
-                            selectable: 'single',
                         },
                         url: 'http://localhost:31602/api/SuratMasuk/ReadAllFinish',
                         fields: [
